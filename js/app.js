@@ -368,7 +368,7 @@
     // MASTER UPDATE
     // ==========================================
     function updateAll(keepWheel = false) {
-        if (!keepWheel && !isSpinning) wheelDisplay = null;
+        if (!keepWheel && !isSpinning) { wheelDisplay = null; resetPointer(); }
         renderClassSelect();
         renderStudents();
         renderHistory();
@@ -713,11 +713,73 @@
         });
     }
 
-    function flickPointer() {
-        const p = $("wheelPointer");
-        p.style.transform = "rotate(-24deg)";
-        clearTimeout(p._t);
-        p._t = setTimeout(() => { p.style.transform = "rotate(0deg)"; }, 65);
+    // ---- Pointer: a spring-loaded flapper that the wheel's pegs push aside, like on a real wheel ----
+    const pointerEl = $("wheelPointer");
+    pointerEl.style.transition = "none";
+    const PTR_MAX = 0.46;                 // max deflection in rad (~26 deg)
+    const PTR_K = 950, PTR_C = 20;        // spring stiffness & damping (slightly under-damped -> little wobble)
+    const ptr = { th: 0, w: 0, raf: null, hold: null };
+
+    function applyPointer() {
+        pointerEl.style.transform = `rotate(${ptr.th}rad)`;
+    }
+
+    function resetPointer() {
+        if (ptr.raf) cancelAnimationFrame(ptr.raf);
+        ptr.raf = null; ptr.th = 0; ptr.w = 0; ptr.hold = null;
+        applyPointer();
+    }
+
+    /** Deflection the pegs force on the pointer between two wheel angles (null = no contact).
+     *  A peg touching the pointer's left edge pushes it to the right until it slips off the right edge. */
+    function pegContact(prevRot, nowRot, n) {
+        if (n < 1) return null;
+        const dpr = window.devicePixelRatio || 1;
+        const size = wheelCanvas.width / dpr;
+        const pegR = Math.max(40, size / 2 - 14 - 4);
+        const half = 13 / pegR;                       // half width of the pointer body at peg level (rad)
+        const slice = (2 * Math.PI) / n;
+        const TAU = 2 * Math.PI;
+        const norm = (x) => { x = (x + Math.PI) % TAU; if (x < 0) x += TAU; return x - Math.PI; };
+        let req = null;
+        for (let i = 0; i < n; i++) {
+            const dPrev = norm(prevRot + i * slice + Math.PI / 2);
+            const dNow = norm(nowRot + i * slice + Math.PI / 2);
+            if (Math.abs(dNow - dPrev) > Math.PI) continue;          // wrapped around, no crossing
+            const lo = Math.min(dPrev, dNow), hi = Math.max(dPrev, dNow);
+            if (hi < -half || lo > half) continue;
+            const depth = Math.min(1, Math.max(0, (dNow + half) / (2 * half)));
+            const r = -PTR_MAX * depth;
+            if (req === null || r < req) req = r;
+        }
+        return req;
+    }
+
+    function stepPointer(dt, req) {
+        dt = Math.min(dt, 0.04);
+        const steps = 3, h = dt / steps;
+        for (let i = 0; i < steps; i++) {
+            ptr.w += (-PTR_K * ptr.th - PTR_C * ptr.w) * h;
+            ptr.th += ptr.w * h;
+            if (req !== null && req !== undefined && ptr.th > req) { ptr.th = req; ptr.w = Math.min(ptr.w, 0); }
+        }
+        ptr.th = Math.max(-PTR_MAX, Math.min(0.25, ptr.th));
+        applyPointer();
+    }
+
+    /** After the wheel stops: let the pointer swing back (or rest against the peg it stopped on). */
+    function settlePointer(hold) {
+        if (ptr.raf) cancelAnimationFrame(ptr.raf);
+        ptr.hold = hold;
+        let last = performance.now();
+        const loop = (now) => {
+            stepPointer((now - last) / 1000, ptr.hold);
+            last = now;
+            const target = ptr.hold === null ? 0 : ptr.hold;
+            if (Math.abs(ptr.th - target) > 0.002 || Math.abs(ptr.w) > 0.02) ptr.raf = requestAnimationFrame(loop);
+            else { ptr.th = target; ptr.w = 0; applyPointer(); ptr.raf = null; }
+        };
+        ptr.raf = requestAnimationFrame(loop);
     }
 
     function startSpin() {
@@ -747,41 +809,44 @@
         const total = (4 + cryptoInt(3)) * TAU + delta;
         const start = currentRotation;
         const target = start + total;
-        const duration = REDUCED_MOTION ? 900 : 4600;   // + 450 ms reveal pause = ~5 s click -> result
+        const duration = REDUCED_MOTION ? 900 : 5000;   // spin time; + 450 ms reveal pause
         const t0 = performance.now();
         lastPassedSlice = sliceUnderPointer(N);
+        resetPointer();
 
-        // Velocity profile: quick ramp-up (first 8 %), then quadratic slow-down.
-        // Position is the exact integral, so the wheel always ends exactly on `target`.
+        // Friction-like profile: short ramp-up (first 8 %), then velocity falls LINEARLY to zero
+        // (constant deceleration, like a real wheel). Position is the exact integral -> ends exactly on `target`.
         const RAMP = 0.08;
-        const V0 = 1 / (RAMP / 2 + (1 - RAMP) / 3);
         const posAt = (p) => (p < RAMP
-            ? (V0 * p * p) / (2 * RAMP)
-            : (V0 * RAMP) / 2 + (V0 * (1 - RAMP) / 3) * (1 - Math.pow((1 - p) / (1 - RAMP), 3)));
-        const velAt = (p) => (p < RAMP ? p / RAMP : Math.pow((1 - p) / (1 - RAMP), 2));  // 0..1
+            ? (2 * p * p) / (2 * RAMP)
+            : RAMP + (1 - RAMP) * (1 - Math.pow((1 - p) / (1 - RAMP), 2)));
+        const velAt = (p) => (p < RAMP ? p / RAMP : (1 - p) / (1 - RAMP));   // 0..1
 
         const wheelBox = wheelCanvas.parentElement;
-        let lastTickAt = 0, tension = false;
+        let lastTickAt = 0, tension = false, prevRot = currentRotation, prevNow = t0;
 
         function frame(now) {
             const p = Math.min(1, (now - t0) / duration);
+            prevRot = currentRotation;
             currentRotation = start + total * posAt(p);
             const idx = sliceUnderPointer(N);
             if (idx !== lastPassedSlice && N > 1) {
                 lastPassedSlice = idx;
-                flickPointer();
                 if (now - lastTickAt > 28) {                       // don't machine-gun the speaker at full speed
                     lastTickAt = now;
                     playTick(380 + 420 * velAt(p));                // pitch falls as the wheel slows down
                 }
             }
-            if (!tension && p > 0.72) { tension = true; wheelBox.classList.add("wheel-tension"); }
+            stepPointer((now - prevNow) / 1000, pegContact(prevRot, currentRotation, N));
+            prevNow = now;
+            if (!tension && p > 0.65) { tension = true; wheelBox.classList.add("wheel-tension"); }
             drawWheel();
             if (p < 1) requestAnimationFrame(frame);
             else {
                 currentRotation = target;
                 drawWheel();
                 wheelBox.classList.remove("wheel-tension");
+                settlePointer(pegContact(currentRotation, currentRotation, N));
                 setTimeout(() => finishSpin(winner), REDUCED_MOTION ? 0 : 450);   // a beat of silence before the reveal
             }
         }
