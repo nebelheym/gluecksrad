@@ -1314,7 +1314,7 @@
     const TZ_DOT = { red: "bg-rose-500", yellow: "bg-amber-400", green: "bg-emerald-500", over: "bg-fuchsia-500" };
 
     const tm = { phase: "idle", t0: 0, acc: 0, prepEnd: 0, iv: null, zone: "red" };   // idle | prep | running | paused | done
-    let descBag = [], descImgBag = [], descImages = [], descSets = {}, descSetBag = [], descCurrent = null, descSpeaker = "", descBusy = false;
+    let descBag = [], descImgBag = [], descImages = [], descSets = {}, descSetBag = [], descBuiltin = false, builtinTried = false, descCurrent = null, descSpeaker = "", descBusy = false;
 
     const fmtTime = (sec, ceil) => {
         const v = Math.max(0, ceil ? Math.ceil(sec) : Math.floor(sec));
@@ -1519,8 +1519,27 @@
         renderDescCounters();
     }
 
+    async function loadBuiltinPics() {
+        if (builtinTried) return;
+        builtinTried = true;
+        try {
+            const res = await fetch("images/manifest.json", { cache: "no-cache" });
+            if (!res.ok) return;
+            const man = await res.json();
+            if (Object.keys(descSets).length) return;
+            Object.keys(man).forEach((slug) => {
+                const m = man[slug];
+                if (!m || !Array.isArray(m.files) || !m.files.length) return;
+                descSets[cleanStr(m.title, 80)] = m.files.map((f) => ({ url: `images/${slug}/${f}`, name: f }));
+            });
+            descBuiltin = Object.keys(descSets).length > 0;
+            renderDescCounters();
+        } catch (e) { /* offline or no images: fine */ }
+    }
+
     function loadFolder(files) {
         let ok = 0;
+        if (descBuiltin) { descSets = {}; descBuiltin = false; }
         const before = Object.keys(descSets).length;
         Array.from(files).forEach((f) => {
             if (!f.type.startsWith("image/") || f.size > 20 * 1024 * 1024 || ok >= 2000) return;
@@ -1550,7 +1569,7 @@
     function clearImages() {
         descImages.forEach((i) => URL.revokeObjectURL(i.url));
         Object.values(descSets).forEach((arr) => arr.forEach((i) => URL.revokeObjectURL(i.url)));
-        descImages = []; descImgBag = []; descSets = {}; descSetBag = [];
+        descImages = []; descImgBag = []; descSets = {}; descSetBag = []; descBuiltin = false;
         $("descImageCap").classList.add("hidden");
         if (descCurrent && descCurrent.kind === "image") {
             descCurrent = null;
@@ -1719,7 +1738,7 @@
             sec[k].classList.toggle("flex", k === mode);
         });
         if (mode === "wheel") resizeCanvas();
-        if (mode === "desc") renderDesc();
+        if (mode === "desc") { renderDesc(); loadBuiltinPics(); }
     }
 
     // ==========================================
@@ -1904,7 +1923,7 @@
     // INIT
     // ==========================================
     function init() {
-        $("buildInfo").textContent = "v11 · " + (REDUCED_MOTION ? "reduced motion (OS) → short spin ~1 s" : "spin 5 s");
+        $("buildInfo").textContent = "v13 · " + (REDUCED_MOTION ? "reduced motion (OS) → short spin ~1 s" : "spin 5 s");
         loadState();
         applyI18n();
         bind();
