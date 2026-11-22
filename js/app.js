@@ -744,24 +744,46 @@
         const current = ((currentRotation % TAU) + TAU) % TAU;
         let delta = desired - current;
         if (delta <= 0) delta += TAU;
-        const total = (6 + cryptoInt(4)) * TAU + delta;
+        const total = (4 + cryptoInt(3)) * TAU + delta;
         const start = currentRotation;
         const target = start + total;
-        const duration = REDUCED_MOTION ? 900 : 10000;
+        const duration = REDUCED_MOTION ? 900 : 4600;   // + 450 ms reveal pause = ~5 s click -> result
         const t0 = performance.now();
         lastPassedSlice = sliceUnderPointer(N);
 
+        // Velocity profile: quick ramp-up (first 8 %), then quadratic slow-down.
+        // Position is the exact integral, so the wheel always ends exactly on `target`.
+        const RAMP = 0.08;
+        const V0 = 1 / (RAMP / 2 + (1 - RAMP) / 3);
+        const posAt = (p) => (p < RAMP
+            ? (V0 * p * p) / (2 * RAMP)
+            : (V0 * RAMP) / 2 + (V0 * (1 - RAMP) / 3) * (1 - Math.pow((1 - p) / (1 - RAMP), 3)));
+        const velAt = (p) => (p < RAMP ? p / RAMP : Math.pow((1 - p) / (1 - RAMP), 2));  // 0..1
+
+        const wheelBox = wheelCanvas.parentElement;
+        let lastTickAt = 0, tension = false;
+
         function frame(now) {
             const p = Math.min(1, (now - t0) / duration);
-            currentRotation = start + total * (1 - Math.pow(1 - p, 4));
+            currentRotation = start + total * posAt(p);
             const idx = sliceUnderPointer(N);
             if (idx !== lastPassedSlice && N > 1) {
                 lastPassedSlice = idx;
-                playTick(620); flickPointer();
+                flickPointer();
+                if (now - lastTickAt > 28) {                       // don't machine-gun the speaker at full speed
+                    lastTickAt = now;
+                    playTick(380 + 420 * velAt(p));                // pitch falls as the wheel slows down
+                }
             }
+            if (!tension && p > 0.72) { tension = true; wheelBox.classList.add("wheel-tension"); }
             drawWheel();
             if (p < 1) requestAnimationFrame(frame);
-            else { currentRotation = target; finishSpin(winner); }
+            else {
+                currentRotation = target;
+                drawWheel();
+                wheelBox.classList.remove("wheel-tension");
+                setTimeout(() => finishSpin(winner), REDUCED_MOTION ? 0 : 450);   // a beat of silence before the reveal
+            }
         }
         requestAnimationFrame(frame);
     }
