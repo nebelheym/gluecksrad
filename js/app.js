@@ -748,7 +748,7 @@
         const total = (6 + cryptoInt(4)) * TAU + delta;
         const start = currentRotation;
         const target = start + total;
-        const duration = REDUCED_MOTION ? 900 : 8000;
+        const duration = REDUCED_MOTION ? 900 : 10000;
         const t0 = performance.now();
         lastPassedSlice = sliceUnderPointer(N);
 
