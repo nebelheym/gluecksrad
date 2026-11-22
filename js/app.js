@@ -1872,6 +1872,7 @@
     // INIT
     // ==========================================
     function init() {
+        $("buildInfo").textContent = "v9 · " + (REDUCED_MOTION ? "reduced motion (OS) → short spin ~1 s" : "spin 5 s");
         loadState();
         applyI18n();
         bind();
