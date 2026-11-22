@@ -326,7 +326,7 @@
     }
 
     /** Opens the shared dialog. Resolves with the entered string (or true for confirm) or null if cancelled. */
-    function openDialog({ title, hint = "", value = "", multiline = false, confirmOnly = false, okLabel, danger = false }) {
+    function openDialog({ title, hint = "", value = "", multiline = false, confirmOnly = false, okLabel, danger = false, password = false }) {
         return new Promise((resolve) => {
             const dlg = $("dlg"), form = $("dlgForm"), input = $("dlgInput"), text = $("dlgText");
             const ok = $("dlgOk"), cancel = $("dlgCancel");
@@ -335,6 +335,7 @@
             $("dlgHint").classList.toggle("hidden", !hint);
             input.classList.toggle("hidden", multiline || confirmOnly);
             text.classList.toggle("hidden", !multiline || confirmOnly);
+            input.type = password ? "password" : "text";
             input.value = value;
             text.value = value;
             ok.textContent = okLabel || t("dlg.save");
@@ -347,7 +348,6 @@
                 form.removeEventListener("submit", onSubmit);
                 cancel.removeEventListener("click", onCancel);
                 dlg.removeEventListener("cancel", onCancel);
-                dlg.removeEventListener("close", onCancel);
                 if (dlg.open) dlg.close();
                 resolve(val);
             };
@@ -359,7 +359,6 @@
             form.addEventListener("submit", onSubmit);
             cancel.addEventListener("click", onCancel);
             dlg.addEventListener("cancel", onCancel);
-            dlg.addEventListener("close", onCancel);
             dlg.showModal();
             setTimeout(() => { (multiline ? text : input).focus(); if (!multiline) input.select(); }, 30);
         });
@@ -1039,6 +1038,121 @@
     }
 
     // ==========================================
+    // SHARE LINK  (no server: data lives in the URL fragment, which browsers never send;
+    // optionally encrypted with AES-GCM, key derived from a password via PBKDF2)
+    // ==========================================
+    const b64u = {
+        enc(bytes) {
+            let s = "";
+            bytes.forEach((b) => { s += String.fromCharCode(b); });
+            return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        },
+        dec(str) {
+            const s = atob(str.replace(/-/g, "+").replace(/_/g, "/"));
+            return Uint8Array.from(s, (ch) => ch.charCodeAt(0));
+        }
+    };
+
+    async function pipeBytes(bytes, stream) {
+        const w = stream.writable.getWriter();
+        w.write(bytes); w.close();
+        return new Uint8Array(await new Response(stream.readable).arrayBuffer());
+    }
+    const deflate = (b) => pipeBytes(b, new CompressionStream("deflate-raw"));
+    const inflate = (b) => pipeBytes(b, new DecompressionStream("deflate-raw"));
+
+    async function deriveKey(pw, salt) {
+        const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+        return crypto.subtle.deriveKey(
+            { name: "PBKDF2", salt, iterations: 200000, hash: "SHA-256" },
+            base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]
+        );
+    }
+
+    async function buildShareLink(c, password) {
+        const absent = [];
+        c.students.forEach((s, i) => { if (!s.present) absent.push(i); });
+        const payload = { n: c.name, s: c.students.map((s) => s.name), a: absent };
+        let bytes = await deflate(new TextEncoder().encode(JSON.stringify(payload)));
+        let prefix = "c=";
+        if (password) {
+            const salt = crypto.getRandomValues(new Uint8Array(16));
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            const key = await deriveKey(password, salt);
+            const ct = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, bytes));
+            bytes = new Uint8Array(16 + 12 + ct.length);
+            bytes.set(salt, 0); bytes.set(iv, 16); bytes.set(ct, 28);
+            prefix = "e=";
+        }
+        return location.origin + location.pathname + "#" + prefix + b64u.enc(bytes);
+    }
+
+    async function parseShare(hash, password) {
+        const encrypted = hash.startsWith("#e=");
+        let bytes = b64u.dec(hash.slice(3));
+        if (encrypted) {
+            const salt = bytes.slice(0, 16), iv = bytes.slice(16, 28), ct = bytes.slice(28);
+            const key = await deriveKey(password || "", salt);
+            bytes = new Uint8Array(await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, ct));
+        }
+        const p = JSON.parse(new TextDecoder().decode(await inflate(bytes)));
+        const absent = new Set(Array.isArray(p.a) ? p.a : []);
+        const students = (Array.isArray(p.s) ? p.s : []).map((n, i) => ({ name: n, present: !absent.has(i) }));
+        const c = sanitizeClass({ name: p.n, students });
+        if (!c || !c.students.length) throw new Error("empty");
+        return c;
+    }
+
+    async function shareClass() {
+        if (!window.CompressionStream) { toast(t("toast.shareBad")); return; }
+        const pw = await openDialog({ title: t("dlg.shareTitle"), hint: t("dlg.shareHint"), password: true, okLabel: t("dlg.shareCreate") });
+        if (pw === null) return;
+        if (pw && !(window.crypto && crypto.subtle)) { toast(t("toast.shareBad")); return; }
+        const link = await buildShareLink(cls(), pw);
+        try { await navigator.clipboard.writeText(link); toast(t("toast.shareCopied")); } catch (e) { /* user copies manually */ }
+        await openDialog({ title: t("dlg.shareLinkTitle"), hint: t("dlg.shareLinkHint"), value: link, multiline: true, okLabel: t("dlg.ok") });
+    }
+
+    let importingShare = false;
+    async function handleIncomingShare() {
+        const h = location.hash;
+        if (importingShare || !/^#[ce]=/.test(h)) return;
+        importingShare = true;
+        try {
+            let c = null;
+            if (h.startsWith("#e=")) {
+                for (let tries = 0; tries < 3 && !c; tries++) {
+                    const pw = await openDialog({ title: t("dlg.pwTitle"), hint: t("dlg.pwHint"), password: true, okLabel: t("dlg.ok") });
+                    if (pw === null) break;
+                    try { c = await parseShare(h, pw); } catch (e) { toast(t("toast.pwWrong")); }
+                }
+            } else {
+                c = await parseShare(h);
+            }
+            if (c) {
+                if (state.classes.length >= MAX_CLASSES) { toast(t("toast.classLimit", { n: MAX_CLASSES })); }
+                else {
+                    const ok = await openDialog({
+                        title: t("dlg.importTitle"), hint: t("dlg.importHint", { name: c.name, n: c.students.length }),
+                        confirmOnly: true, okLabel: t("dlg.importBtn")
+                    });
+                    if (ok) {
+                        state.classes.push(c);
+                        state.activeId = c.id;
+                        resetSessionView();
+                        save(); updateAll();
+                        toast(t("toast.shareImported", { name: c.name }));
+                    }
+                }
+            }
+        } catch (e) {
+            toast(t("toast.shareBad"));
+        }
+        history.replaceState(null, "", location.pathname + location.search);
+        importingShare = false;
+    }
+
+    // ==========================================
     // CONFETTI
     // ==========================================
     const cCanvas = $("confettiCanvas");
@@ -1155,6 +1269,7 @@
             state.activeId = e.target.value; resetSessionView(); save(); updateAll();
         });
         $("newClassBtn").addEventListener("click", () => { if (!busy()) newClass(); });
+        $("shareClassBtn").addEventListener("click", shareClass);
         $("renameClassBtn").addEventListener("click", renameClass);
         $("deleteClassBtn").addEventListener("click", () => { if (!busy()) deleteClass(); });
 
@@ -1230,6 +1345,7 @@
         });
 
         window.addEventListener("resize", resizeCanvas);
+        window.addEventListener("hashchange", handleIncomingShare);
     }
 
     async function editTopics() {
@@ -1253,6 +1369,7 @@
         setMode("wheel");
         updateAll();
         resizeCanvas();
+        handleIncomingShare();
         if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
             navigator.serviceWorker.register("sw.js").catch(() => {});
         }

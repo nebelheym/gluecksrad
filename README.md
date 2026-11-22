@@ -14,6 +14,7 @@ Glücksrad, Slot-Maschine und Gruppen-Generator für den Unterricht – besonder
 - Glücksrad mit „Runde“-Logik (Aufgerufene werden ausgeschlossen)
 - Slot-Maschine für Dialogpaare, ganze Klasse in 2er/3er/4er-Gruppen aufteilen
 - Zufällige Gesprächsthemen ohne Wiederholung (editierbar)
+- **Klasse per Link teilen / aufs andere Gerät übertragen** – ohne Konto: Die Daten stehen im Link (URL-Fragment, wird nie an einen Server gesendet), optional mit Passwort verschlüsselt (AES-GCM)
 - Sicherung als JSON-Datei, Vollbild für den Beamer, Leertaste = drehen
 
 ## Lokal starten
