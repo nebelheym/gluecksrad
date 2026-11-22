@@ -1314,7 +1314,7 @@
     const TZ_DOT = { red: "bg-rose-500", yellow: "bg-amber-400", green: "bg-emerald-500", over: "bg-fuchsia-500" };
 
     const tm = { phase: "idle", t0: 0, acc: 0, prepEnd: 0, iv: null, zone: "red" };   // idle | prep | running | paused | done
-    let descBag = [], descImgBag = [], descImages = [], descCurrent = null, descSpeaker = "", descBusy = false;
+    let descBag = [], descImgBag = [], descImages = [], descSets = {}, descSetBag = [], descCurrent = null, descSpeaker = "", descBusy = false;
 
     const fmtTime = (sec, ceil) => {
         const v = Math.max(0, ceil ? Math.ceil(sec) : Math.floor(sec));
@@ -1456,6 +1456,7 @@
     function showTopic(label, fromSelect) {
         descCurrent = { kind: "topic", label };
         $("descImage").classList.add("hidden");
+        $("descImageCap").classList.add("hidden");
         $("descTopicText").classList.remove("hidden");
         $("descTopicText").textContent = label;
         const link = $("descSearchLink");
@@ -1490,20 +1491,46 @@
 
     function drawImage() {
         if (descBusy) return;
-        if (!descImages.length) { toast(t("toast.noImages")); return; }
+        const themes = Object.keys(descSets);
+        let img, caption = "";
+        if (themes.length) {
+            if (!descSetBag.length) descSetBag = shuffle(themes);
+            caption = descSetBag.pop();
+            const pics = descSets[caption];
+            img = pics[cryptoInt(pics.length)];
+        } else if (descImages.length) {
+            if (!descImgBag.length) descImgBag = shuffle(descImages.map((_, i) => i));
+            img = descImages[descImgBag.pop()];
+        } else { toast(t("toast.noImages")); return; }
         initAudio();
-        if (!descImgBag.length) descImgBag = shuffle(descImages.map((_, i) => i));
-        const img = descImages[descImgBag.pop()];
-        descCurrent = { kind: "image", label: `${t("desc.imageLabel")}: ${img.name}` };
+        descCurrent = { kind: "image", label: caption || `${t("desc.imageLabel")}: ${img.name}` };
         $("descTopicText").classList.add("hidden");
         const el = $("descImage");
         el.classList.remove("hidden");
         el.classList.remove("animate-pop-in"); void el.offsetWidth; el.classList.add("animate-pop-in");
         el.src = img.url;
         el.alt = descCurrent.label;
+        const cap = $("descImageCap");
+        cap.textContent = caption;
+        cap.classList.toggle("hidden", !caption);
         $("descSearchLink").classList.add("hidden");
         $("descTopicSelect").value = "";
         playFanfare();
+        renderDescCounters();
+    }
+
+    function loadFolder(files) {
+        let ok = 0;
+        const before = Object.keys(descSets).length;
+        Array.from(files).forEach((f) => {
+            if (!f.type.startsWith("image/") || f.size > 20 * 1024 * 1024 || ok >= 2000) return;
+            const parts = (f.webkitRelativePath || f.name).split("/");
+            const theme = cleanStr(parts.length >= 3 ? parts[1] : parts.length === 2 ? parts[0] : "–", 80) || "–";
+            (descSets[theme] = descSets[theme] || []).push({ url: URL.createObjectURL(f), name: cleanStr(f.name, 40) });
+            ok++;
+        });
+        descSetBag = [];
+        toast(t("toast.folderLoaded", { n: ok, k: Object.keys(descSets).length }));
         renderDescCounters();
     }
 
@@ -1522,7 +1549,9 @@
 
     function clearImages() {
         descImages.forEach((i) => URL.revokeObjectURL(i.url));
-        descImages = []; descImgBag = [];
+        Object.values(descSets).forEach((arr) => arr.forEach((i) => URL.revokeObjectURL(i.url)));
+        descImages = []; descImgBag = []; descSets = {}; descSetBag = [];
+        $("descImageCap").classList.add("hidden");
         if (descCurrent && descCurrent.kind === "image") {
             descCurrent = null;
             $("descImage").classList.add("hidden"); $("descImage").removeAttribute("src");
@@ -1587,9 +1616,10 @@
         $("descSpeakerResetBtn").disabled = called === 0;
         $("descSpeakerBtn").disabled = present.length === 0;
         $("descTopicsLeft").textContent = t("desc.topicsLeft", { n: descBag.length || state.picTopics.length });
-        $("descDrawImageBtn").disabled = descImages.length === 0;
-        $("descClearImagesBtn").textContent = t("desc.clearImages", { n: descImages.length });
-        $("descClearImagesBtn").disabled = descImages.length === 0;
+        const picTotal = descImages.length + Object.values(descSets).reduce((a, x) => a + x.length, 0);
+        $("descDrawImageBtn").disabled = picTotal === 0;
+        $("descClearImagesBtn").textContent = t("desc.clearImages", { n: picTotal });
+        $("descClearImagesBtn").disabled = picTotal === 0;
     }
 
     function renderDescLog() {
@@ -1849,6 +1879,8 @@
         $("descLoadImagesBtn").addEventListener("click", () => $("descImageFile").click());
         $("descImageFile").addEventListener("change", (e) => { if (e.target.files.length) loadImages(e.target.files); e.target.value = ""; });
         $("descClearImagesBtn").addEventListener("click", clearImages);
+        $("descLoadFolderBtn").addEventListener("click", () => $("descFolderFile").click());
+        $("descFolderFile").addEventListener("change", (e) => { if (e.target.files.length) loadFolder(e.target.files); e.target.value = ""; });
         ["setRedEnd", "setYellowEnd", "setMax", "setPrep"].forEach((id) => $(id).addEventListener("change", readTimeSettings));
         $("descLogCopyBtn").addEventListener("click", copyDescLog);
         $("descLogClearBtn").addEventListener("click", () => { cls().descLog = []; save(); renderDescLog(); toast(t("toast.listCleared")); });
@@ -1872,7 +1904,7 @@
     // INIT
     // ==========================================
     function init() {
-        $("buildInfo").textContent = "v9 · " + (REDUCED_MOTION ? "reduced motion (OS) → short spin ~1 s" : "spin 5 s");
+        $("buildInfo").textContent = "v11 · " + (REDUCED_MOTION ? "reduced motion (OS) → short spin ~1 s" : "spin 5 s");
         loadState();
         applyI18n();
         bind();
