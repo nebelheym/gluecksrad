@@ -14,6 +14,7 @@ Glücksrad, Slot-Maschine und Gruppen-Generator für den Unterricht – besonder
 - Glücksrad mit „Runde“-Logik (Aufgerufene werden ausgeschlossen)
 - Slot-Maschine für Dialogpaare, ganze Klasse in 2er/3er/4er-Gruppen aufteilen
 - Zufällige Gesprächsthemen ohne Wiederholung (editierbar)
+- **Bildbeschreibung (z. B. Prüfungsvorbereitung B1):** Thema zufällig oder per Auswahl, wer spricht (Zufall), Sprechzeit-Timer mit Farbzonen (rot → gelb → grün → Zeit um; Zeiten einstellbar, Standard 1:30 / 3:00 / 5:00, optionale Vorbereitungszeit), Tipps je Phase, Redemittel, Protokoll der Sprechzeiten. Eigene Bilder können lokal geladen werden (nur im Arbeitsspeicher, kein Upload). Die Standardzeiten sind Richtwerte – bitte mit den aktuellen Vorgaben des Prüfungsanbieters abgleichen.
 - **Klasse per Link teilen / aufs andere Gerät übertragen** – ohne Konto: Die Daten stehen im Link (URL-Fragment, wird nie an einen Server gesendet), optional mit Passwort verschlüsselt (AES-GCM)
 - Sicherung als JSON-Datei, Vollbild für den Beamer, Leertaste = drehen
 

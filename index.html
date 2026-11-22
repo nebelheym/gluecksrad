@@ -52,6 +52,9 @@
                 <button id="modePairsBtn" type="button" role="tab" class="px-3.5 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition flex items-center gap-1.5 active:scale-95">
                     <span aria-hidden="true">🎰</span><span data-i18n="mode.pairs"></span>
                 </button>
+                <button id="modeDescBtn" type="button" role="tab" class="px-3.5 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition flex items-center gap-1.5 active:scale-95">
+                    <span aria-hidden="true">🖼️</span><span data-i18n="mode.desc"></span>
+                </button>
             </div>
 
             <div class="flex items-center gap-1.5">
@@ -247,6 +250,97 @@
                                 </div>
                             </div>
                             <div id="pairsSessionList" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2.5"></div>
+                        </div>
+                    </div>
+                </section>
+                <!-- ============ MODE 3: PICTURE DESCRIPTION ============ -->
+                <section id="sectionDesc" class="hidden flex-col gap-4">
+                    <div class="bg-slate-900/60 border border-slate-800/90 rounded-3xl p-4 sm:p-6 shadow-2xl backdrop-blur-sm">
+
+                        <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-950/80 border border-slate-800/90 rounded-2xl px-4 py-2.5 mb-5">
+                            <span data-i18n="desc.title" class="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-400"></span>
+                            <div class="flex flex-wrap items-center gap-2 ml-auto">
+                                <span data-i18n="desc.speaker" class="text-xs font-semibold text-slate-300"></span>
+                                <strong id="descSpeakerName" class="text-sm font-extrabold text-white bg-slate-800 border border-slate-700 px-3 py-0.5 rounded-lg min-w-[5rem] text-center">—</strong>
+                                <button id="descSpeakerBtn" type="button" data-i18n="desc.speakerDraw" class="px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition active:scale-95 disabled:opacity-50 disabled:pointer-events-none"></button>
+                                <button id="descSpeakerResetBtn" type="button" class="px-3 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-bold transition active:scale-95 disabled:opacity-40 disabled:pointer-events-none"></button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+
+                            <!-- Topic / picture -->
+                            <div class="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-2 border-indigo-500/40 rounded-3xl p-5 flex flex-col gap-4 shadow-xl">
+                                <div class="min-h-[12rem] flex items-center justify-center text-center">
+                                    <h2 id="descTopicText" class="text-2xl sm:text-4xl font-black text-white tracking-tight break-words"></h2>
+                                    <img id="descImage" alt="" class="hidden max-h-[46vh] max-w-full rounded-2xl object-contain shadow-2xl animate-pop-in">
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <button id="descDrawTopicBtn" type="button" class="py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 to-pink-600 hover:from-amber-400 hover:to-pink-500 text-white font-black text-sm sm:text-base shadow-xl border border-white/20 transition active:scale-95 disabled:opacity-50 disabled:pointer-events-none"><span data-i18n="desc.drawTopic"></span></button>
+                                    <button id="descDrawImageBtn" type="button" class="py-3 px-4 rounded-2xl bg-slate-800 hover:bg-slate-700 border-2 border-indigo-500/50 text-indigo-200 font-black text-sm sm:text-base shadow-xl transition active:scale-95 disabled:opacity-40 disabled:pointer-events-none"><span data-i18n="desc.drawImage"></span></button>
+                                </div>
+                                <select id="descTopicSelect" class="w-full bg-slate-900 border border-slate-700 text-slate-100 text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none focus:border-indigo-500"></select>
+                                <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs">
+                                    <button id="descEditTopicsBtn" type="button" data-i18n="desc.editTopics" class="font-semibold text-amber-300 hover:text-amber-200 underline underline-offset-2"></button>
+                                    <button id="descReshuffleBtn" type="button" data-i18n="desc.reshuffle" class="font-semibold text-slate-300 hover:text-white underline underline-offset-2"></button>
+                                    <a id="descSearchLink" href="#" target="_blank" rel="noopener noreferrer" data-i18n="desc.searchImage" class="hidden font-semibold text-sky-300 hover:text-sky-200 underline underline-offset-2"></a>
+                                    <span id="descTopicsLeft" class="text-slate-500 ml-auto"></span>
+                                </div>
+                                <div class="border-t border-slate-800 pt-3 flex flex-wrap items-center gap-2">
+                                    <button id="descLoadImagesBtn" type="button" data-i18n="desc.loadImages" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition"></button>
+                                    <button id="descClearImagesBtn" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-950/60 border border-slate-700 text-slate-300 text-xs font-semibold transition disabled:opacity-40 disabled:pointer-events-none"></button>
+                                    <input id="descImageFile" type="file" accept="image/*" multiple class="hidden">
+                                    <p data-i18n="desc.imagesNote" class="w-full text-[10.5px] leading-snug text-slate-500"></p>
+                                </div>
+                            </div>
+
+                            <!-- Timer -->
+                            <div id="timerCard" class="rounded-3xl p-5 border-2 flex flex-col gap-3 shadow-xl transition-colors duration-500">
+                                <div class="text-center">
+                                    <div id="timerLabel" class="text-xs sm:text-sm font-extrabold uppercase tracking-widest"></div>
+                                    <div id="timerDigits" class="text-7xl sm:text-8xl font-black tabular-nums tracking-tight leading-none my-2">0:00</div>
+                                </div>
+                                <div>
+                                    <div id="timerBar" class="relative h-4 rounded-full overflow-hidden border border-slate-700">
+                                        <div id="timerShade" class="absolute right-0 top-0 h-full bg-slate-950/70" style="width:100%"></div>
+                                        <div id="timerMark" class="absolute top-0 h-full w-1 bg-white" style="left:0%"></div>
+                                    </div>
+                                    <div id="timerTicks" class="relative h-5 mt-1 text-[11px] text-slate-400"></div>
+                                </div>
+                                <p class="min-h-[2.75rem] text-xs sm:text-sm text-slate-200 text-center leading-snug"><span data-i18n="desc.tip" class="font-bold text-amber-300"></span>: <span id="timerTip"></span></p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <button id="timerMainBtn" type="button" class="py-3.5 px-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-black text-base sm:text-lg shadow-xl border border-white/20 transition active:scale-95"></button>
+                                    <button id="timerStopBtn" type="button" data-i18n="desc.stop" class="py-3.5 px-4 rounded-2xl bg-slate-800 hover:bg-emerald-800 border-2 border-emerald-500/50 text-emerald-200 font-black text-sm sm:text-base shadow-xl transition active:scale-95 disabled:opacity-40 disabled:pointer-events-none"></button>
+                                </div>
+                                <button id="timerResetBtn" type="button" data-i18n="desc.timerReset" class="self-center px-3 py-1 rounded-lg text-slate-400 hover:text-white text-xs font-semibold transition disabled:opacity-40 disabled:pointer-events-none"></button>
+                            </div>
+                        </div>
+
+                        <details class="mt-5 bg-slate-950/60 border border-slate-800/80 rounded-2xl px-4 py-3">
+                            <summary data-i18n="desc.settings" class="cursor-pointer text-xs sm:text-sm font-bold text-slate-200"></summary>
+                            <div class="mt-3 grid grid-cols-2 lg:grid-cols-4 gap-3">
+                                <label class="text-[11px] font-semibold text-slate-400 flex flex-col gap-1"><span data-i18n="desc.redEnd"></span><input id="setRedEnd" type="number" min="0.05" max="30" step="0.5" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-sm text-white focus:outline-none focus:border-indigo-500"></label>
+                                <label class="text-[11px] font-semibold text-slate-400 flex flex-col gap-1"><span data-i18n="desc.yellowEnd"></span><input id="setYellowEnd" type="number" min="0.1" max="30" step="0.5" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-sm text-white focus:outline-none focus:border-indigo-500"></label>
+                                <label class="text-[11px] font-semibold text-slate-400 flex flex-col gap-1"><span data-i18n="desc.max"></span><input id="setMax" type="number" min="0" max="60" step="0.5" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-sm text-white focus:outline-none focus:border-indigo-500"></label>
+                                <label class="text-[11px] font-semibold text-slate-400 flex flex-col gap-1"><span data-i18n="desc.prepMin"></span><input id="setPrep" type="number" min="0" max="10" step="0.5" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-sm text-white focus:outline-none focus:border-indigo-500"></label>
+                            </div>
+                            <p data-i18n="desc.settingsNote" class="mt-2 text-[10.5px] leading-snug text-slate-500"></p>
+                        </details>
+
+                        <details class="mt-3 bg-slate-950/60 border border-slate-800/80 rounded-2xl px-4 py-3">
+                            <summary data-i18n="desc.help" class="cursor-pointer text-xs sm:text-sm font-bold text-slate-200"></summary>
+                            <div id="descPhrases" class="mt-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
+                        </details>
+
+                        <div class="mt-5 pt-4 border-t border-slate-800">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <h3 data-i18n="desc.log" class="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-slate-200"></h3>
+                                <div class="flex items-center gap-2">
+                                    <button id="descLogCopyBtn" type="button" data-i18n="desc.copy" class="px-3 py-1 rounded-xl bg-slate-800 hover:bg-indigo-900/60 border border-slate-700 text-slate-300 hover:text-indigo-200 text-xs font-semibold transition"></button>
+                                    <button id="descLogClearBtn" type="button" data-i18n="desc.logClear" class="px-3 py-1 rounded-xl bg-slate-800 hover:bg-rose-950/60 border border-slate-700 text-slate-300 hover:text-rose-300 text-xs font-semibold transition"></button>
+                                </div>
+                            </div>
+                            <div id="descLogList" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2.5"></div>
                         </div>
                     </div>
                 </section>

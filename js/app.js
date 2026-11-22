@@ -112,7 +112,9 @@
             history: [],
             wheelExcl: [],
             pairExcl: [],
-            pairs: []
+            pairs: [],
+            descExcl: [],
+            descLog: []
         };
     }
 
@@ -147,8 +149,22 @@
             history: strList(c.history, 200),
             wheelExcl: idList(c.wheelExcl),
             pairExcl: idList(c.pairExcl),
-            pairs
+            pairs,
+            descExcl: idList(c.descExcl),
+            descLog: (Array.isArray(c.descLog) ? c.descLog : [])
+                .map((x) => ({ n: cleanStr(x && x.n), t: cleanStr(x && x.t, 100), s: Number.isFinite(x && x.s) ? Math.max(0, Math.min(7200, Math.round(x.s))) : 0 }))
+                .filter((x) => x.n || x.t || x.s)
+                .slice(0, 200)
         };
+    }
+
+    function sanitizeTimes(p, base) {
+        const num = (v, d, lo, hi) => (Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : d);
+        const tRed = num(p.tRed, base.tRed, 0.05, 30);
+        const tYellow = Math.max(tRed + 0.05, num(p.tYellow, base.tYellow, 0.1, 30));
+        let tMax = num(p.tMax, base.tMax, 0, 60);
+        if (tMax > 0 && tMax <= tYellow) tMax = tYellow + 0.5;
+        return { tRed, tYellow, tMax, tPrep: num(p.tPrep, base.tPrep, 0, 10) };
     }
 
     function defaultState() {
@@ -159,6 +175,8 @@
             excludeWheel: true, excludePairs: true,
             useTopics: false, groupSize: 2,
             topics: [...window.DEFAULT_TOPICS],
+            picTopics: [...window.PIC_TOPICS],
+            tRed: 1.5, tYellow: 3, tMax: 5, tPrep: 1,
             activeId: cl.id,
             classes: [cl],
             _needsDemoName: true
@@ -208,6 +226,8 @@
                         useTopics: !!p.useTopics,
                         groupSize: [2, 3, 4].includes(p.groupSize) ? p.groupSize : 2,
                         topics: (Array.isArray(p.topics) ? p.topics : base.topics).map((x) => cleanStr(x, 100)).filter(Boolean).slice(0, 200),
+                        picTopics: (Array.isArray(p.picTopics) && p.picTopics.length ? p.picTopics : base.picTopics).map((x) => cleanStr(x, 100)).filter(Boolean).slice(0, 300),
+                        ...sanitizeTimes(p, base),
                         activeId: classes.some((c) => c.id === p.activeId) ? p.activeId : classes[0].id,
                         classes
                     };
@@ -373,6 +393,7 @@
         renderStudents();
         renderHistory();
         renderPairs();
+        renderDesc();
         updateControls();
         drawWheel();
     }
@@ -459,6 +480,7 @@
     }
 
     function resetSessionView() {
+        descResetAll();
         wheelDisplay = null;
         $("winnerCard").classList.add("hidden");
         $("slotTopicBox").classList.add("hidden");
@@ -599,6 +621,7 @@
         c.students = c.students.filter((x) => x.id !== id);
         c.wheelExcl = c.wheelExcl.filter((x) => x !== id);
         c.pairExcl = c.pairExcl.filter((x) => x !== id);
+        c.descExcl = c.descExcl.filter((x) => x !== id);
         save(); updateAll(); toast(t("toast.removed", { name: s.name }));
     }
 
@@ -1089,7 +1112,7 @@
     // BACKUP
     // ==========================================
     function exportBackup() {
-        const data = JSON.stringify({ app: "gluecksrad", v: 5, topics: state.topics, classes: state.classes }, null, 2);
+        const data = JSON.stringify({ app: "gluecksrad", v: 5, topics: state.topics, picTopics: state.picTopics, classes: state.classes }, null, 2);
         const a = document.createElement("a");
         a.href = URL.createObjectURL(new Blob([data], { type: "application/json" }));
         a.download = `gluecksrad-backup-${new Date().toISOString().slice(0, 10)}.json`;
@@ -1113,6 +1136,7 @@
                     c.students.forEach((s) => { const nid = uid(); map.set(s.id, nid); s.id = nid; });
                     c.wheelExcl = c.wheelExcl.map((x) => map.get(x)).filter(Boolean);
                     c.pairExcl = c.pairExcl.map((x) => map.get(x)).filter(Boolean);
+                    c.descExcl = c.descExcl.map((x) => map.get(x)).filter(Boolean);
                 });
                 state.classes.push(...incoming);
                 state.activeId = incoming[0].id;
@@ -1276,25 +1300,396 @@
     }
 
     // ==========================================
+    // PICTURE DESCRIPTION: topic / picture / speaker draw + speaking timer
+    // ==========================================
+    const TZ_CARD = {
+        idle: "bg-slate-900/70 border-slate-700", prep: "bg-sky-950/70 border-sky-500/70",
+        red: "bg-rose-950/70 border-rose-500", yellow: "bg-amber-950/70 border-amber-400",
+        green: "bg-emerald-950/70 border-emerald-400", over: "bg-fuchsia-950/70 border-fuchsia-400"
+    };
+    const TZ_TEXT = {
+        idle: "text-slate-200", prep: "text-sky-300", red: "text-rose-300",
+        yellow: "text-amber-300", green: "text-emerald-300", over: "text-fuchsia-300"
+    };
+    const TZ_DOT = { red: "bg-rose-500", yellow: "bg-amber-400", green: "bg-emerald-500", over: "bg-fuchsia-500" };
+
+    const tm = { phase: "idle", t0: 0, acc: 0, prepEnd: 0, iv: null, zone: "red" };   // idle | prep | running | paused | done
+    let descBag = [], descImgBag = [], descImages = [], descCurrent = null, descSpeaker = "", descBusy = false;
+
+    const fmtTime = (sec, ceil) => {
+        const v = Math.max(0, ceil ? Math.ceil(sec) : Math.floor(sec));
+        return `${Math.floor(v / 60)}:${String(v % 60).padStart(2, "0")}`;
+    };
+
+    function zoneOf(sec) {
+        if (state.tMax > 0 && sec >= state.tMax * 60) return "over";
+        if (sec < state.tRed * 60) return "red";
+        if (sec < state.tYellow * 60) return "yellow";
+        return "green";
+    }
+
+    const elapsedMs = () => (tm.phase === "running" ? tm.acc + (performance.now() - tm.t0) : tm.acc);
+
+    function setTimerInterval(on) {
+        if (tm.iv) { clearInterval(tm.iv); tm.iv = null; }
+        if (on) tm.iv = setInterval(tick, 100);
+    }
+
+    function cue(zone) {
+        if (zone === "yellow") blip("sine", 600, 900, 0.18, 0.15);
+        else if (zone === "green") playFanfare();
+        else if (zone === "over") [0, 220, 440].forEach((d) => setTimeout(() => blip("triangle", 880, 700, 0.16, 0.18), d));
+    }
+
+    function beginRun() {
+        tm.phase = "running"; tm.t0 = performance.now(); tm.acc = 0; tm.zone = "red";
+        blip("sine", 500, 800, 0.12, 0.14);
+        setTimerInterval(true);
+        renderTimer();
+    }
+
+    function timerMain() {
+        initAudio();
+        if (tm.phase === "idle" || tm.phase === "done") {
+            tm.acc = 0;
+            if (state.tPrep > 0) {
+                tm.phase = "prep"; tm.prepEnd = performance.now() + state.tPrep * 60000;
+                setTimerInterval(true); renderTimer();
+            } else beginRun();
+        } else if (tm.phase === "prep") {
+            beginRun();                                           // skip preparation
+        } else if (tm.phase === "running") {
+            tm.acc = elapsedMs(); tm.phase = "paused"; setTimerInterval(false); renderTimer();
+        } else if (tm.phase === "paused") {
+            tm.phase = "running"; tm.t0 = performance.now(); setTimerInterval(true); renderTimer();
+        }
+    }
+
+    function timerStop() {
+        if (tm.phase !== "running" && tm.phase !== "paused") return;
+        tm.acc = elapsedMs(); tm.phase = "done"; setTimerInterval(false);
+        const c = cls();
+        c.descLog.unshift({
+            n: descSpeaker || "–",
+            t: descCurrent ? descCurrent.label : "",
+            s: Math.round(tm.acc / 1000)
+        });
+        if (c.descLog.length > 200) c.descLog.length = 200;
+        save(); renderTimer(); renderDescLog();
+    }
+
+    function timerReset() {
+        tm.phase = "idle"; tm.acc = 0; setTimerInterval(false); renderTimer();
+    }
+
+    function tick() {
+        if (tm.phase === "prep") {
+            if (performance.now() >= tm.prepEnd) { beginRun(); return; }
+        } else if (tm.phase === "running") {
+            const z = zoneOf(elapsedMs() / 1000);
+            if (z !== tm.zone) { tm.zone = z; cue(z); }
+        }
+        renderTimer();
+    }
+
+    function renderTimer() {
+        const sec = elapsedMs() / 1000;
+        let zone, shown, label;
+        if (tm.phase === "prep") { zone = "prep"; shown = fmtTime((tm.prepEnd - performance.now()) / 1000, true); label = t("desc.prep"); }
+        else if (tm.phase === "idle") { zone = "idle"; shown = "0:00"; label = t("desc.ready"); }
+        else { zone = zoneOf(sec); shown = fmtTime(sec); label = t("desc.zone." + zone); }
+
+        $("timerCard").className = "rounded-3xl p-5 border-2 flex flex-col gap-3 shadow-xl transition-colors duration-500 " + TZ_CARD[zone];
+        $("timerDigits").className = "text-7xl sm:text-8xl font-black tabular-nums tracking-tight leading-none my-2 " + TZ_TEXT[zone] + (zone === "over" ? " animate-pulse" : "");
+        $("timerLabel").className = "text-xs sm:text-sm font-extrabold uppercase tracking-widest " + TZ_TEXT[zone];
+        $("timerDigits").textContent = shown;
+        $("timerLabel").textContent = label;
+        $("timerTip").textContent = window.PIC_TIPS[zone] || "";
+
+        const main = $("timerMainBtn");
+        main.textContent = tm.phase === "prep" ? t("desc.skipPrep")
+            : tm.phase === "running" ? t("desc.pause")
+            : tm.phase === "paused" ? t("desc.resume") : t("desc.start");
+        $("timerStopBtn").disabled = !(tm.phase === "running" || tm.phase === "paused");
+        $("timerResetBtn").disabled = tm.phase === "idle";
+
+        const span = timerSpan() * 60;
+        const pct = tm.phase === "prep" || tm.phase === "idle" ? 0 : Math.min(100, (sec / span) * 100);
+        $("timerShade").style.width = (100 - pct) + "%";
+        $("timerMark").style.left = `calc(${pct}% - 2px)`;
+    }
+
+    const timerSpan = () => (state.tMax > 0 ? state.tMax : state.tYellow * 1.34);
+
+    function renderTimerSettings() {
+        const span = timerSpan();
+        const r = (state.tRed / span) * 100, y = (state.tYellow / span) * 100;
+        $("timerBar").style.background = `linear-gradient(to right, #f43f5e 0 ${r}%, #fbbf24 ${r}% ${y}%, #10b981 ${y}% 100%)`;
+        const ticks = $("timerTicks");
+        ticks.innerHTML = "";
+        const addTick = (min, extra) => {
+            const el = document.createElement("span");
+            el.className = "absolute -translate-x-1/2 " + (extra || "");
+            el.style.left = Math.min(98, (min / span) * 100) + "%";
+            el.textContent = fmtTime(min * 60);
+            ticks.appendChild(el);
+        };
+        addTick(state.tRed); addTick(state.tYellow);
+        if (state.tMax > 0) addTick(state.tMax, "text-fuchsia-300");
+        const setVal = (id, v) => { const el = $(id); if (document.activeElement !== el) el.value = v; };
+        setVal("setRedEnd", state.tRed); setVal("setYellowEnd", state.tYellow);
+        setVal("setMax", state.tMax); setVal("setPrep", state.tPrep);
+    }
+
+    function readTimeSettings() {
+        const n = (id) => parseFloat($(id).value.replace(",", "."));
+        Object.assign(state, sanitizeTimes(
+            { tRed: n("setRedEnd"), tYellow: n("setYellowEnd"), tMax: n("setMax"), tPrep: n("setPrep") },
+            { tRed: state.tRed, tYellow: state.tYellow, tMax: state.tMax, tPrep: state.tPrep }
+        ));
+        save();
+        ["setRedEnd", "setYellowEnd", "setMax", "setPrep"].forEach((id) => { $(id).blur && 0; });
+        renderTimerSettings(); renderTimer();
+    }
+
+    // ----- topic / picture draw -----
+    function showTopic(label, fromSelect) {
+        descCurrent = { kind: "topic", label };
+        $("descImage").classList.add("hidden");
+        $("descTopicText").classList.remove("hidden");
+        $("descTopicText").textContent = label;
+        const link = $("descSearchLink");
+        link.href = "https://duckduckgo.com/?iax=images&ia=images&q=" + encodeURIComponent(label);
+        link.classList.remove("hidden");
+        if (!fromSelect) $("descTopicSelect").value = "";
+        renderDescCounters();
+    }
+
+    function drawTopic() {
+        if (descBusy) return;
+        if (!state.picTopics.length) { editPicTopics(); return; }
+        initAudio();
+        if (!descBag.length) descBag = shuffle(state.picTopics);
+        const pick = descBag.pop();
+        descBusy = true;
+        $("descImage").classList.add("hidden");
+        $("descTopicText").classList.remove("hidden");
+        const list = state.picTopics;
+        let n = 0;
+        const iv = setInterval(() => {
+            $("descTopicText").textContent = list[cryptoInt(list.length)];
+            playTick(500 + (n % 3) * 90);
+            if (++n >= (REDUCED_MOTION ? 2 : 14)) {
+                clearInterval(iv);
+                descBusy = false;
+                showTopic(pick);
+                playFanfare();
+            }
+        }, 75);
+    }
+
+    function drawImage() {
+        if (descBusy) return;
+        if (!descImages.length) { toast(t("toast.noImages")); return; }
+        initAudio();
+        if (!descImgBag.length) descImgBag = shuffle(descImages.map((_, i) => i));
+        const img = descImages[descImgBag.pop()];
+        descCurrent = { kind: "image", label: `${t("desc.imageLabel")}: ${img.name}` };
+        $("descTopicText").classList.add("hidden");
+        const el = $("descImage");
+        el.classList.remove("hidden");
+        el.classList.remove("animate-pop-in"); void el.offsetWidth; el.classList.add("animate-pop-in");
+        el.src = img.url;
+        el.alt = descCurrent.label;
+        $("descSearchLink").classList.add("hidden");
+        $("descTopicSelect").value = "";
+        playFanfare();
+        renderDescCounters();
+    }
+
+    function loadImages(files) {
+        let ok = 0, skipped = 0;
+        Array.from(files).forEach((f) => {
+            if (!f.type.startsWith("image/") || f.size > 20 * 1024 * 1024 || descImages.length >= 40) { skipped++; return; }
+            descImages.push({ url: URL.createObjectURL(f), name: cleanStr(f.name.replace(/\.[^.]+$/, ""), 30) || "–" });
+            ok++;
+        });
+        descImgBag = [];
+        if (ok) toast(t("toast.imagesLoaded", { n: ok }));
+        if (skipped) setTimeout(() => toast(t("toast.imagesSkipped")), ok ? 3300 : 0);
+        renderDescCounters();
+    }
+
+    function clearImages() {
+        descImages.forEach((i) => URL.revokeObjectURL(i.url));
+        descImages = []; descImgBag = [];
+        if (descCurrent && descCurrent.kind === "image") {
+            descCurrent = null;
+            $("descImage").classList.add("hidden"); $("descImage").removeAttribute("src");
+            $("descTopicText").classList.remove("hidden"); $("descTopicText").textContent = t("desc.noTopic");
+        }
+        renderDescCounters();
+    }
+
+    async function editPicTopics() {
+        const txt = await openDialog({
+            title: t("dlg.picTopicsTitle"), hint: t("dlg.picTopicsHint"),
+            value: state.picTopics.join("\n"), multiline: true
+        });
+        if (txt === null) return;
+        const list = txt.split(/\n+/).map((x) => cleanStr(x, 100)).filter(Boolean).slice(0, 300);
+        state.picTopics = list.length ? list : [...window.PIC_TOPICS];
+        descBag = [];
+        save(); renderDesc();
+    }
+
+    // ----- speaker draw -----
+    function drawSpeaker() {
+        if (descBusy) return;
+        const c = cls();
+        const pool = c.students.filter((s) => s.present && !c.descExcl.includes(s.id));
+        if (!pool.length) { toast(t("toast.noSpeaker")); return; }
+        initAudio();
+        const pick = pool[cryptoInt(pool.length)];
+        descBusy = true;
+        let n = 0;
+        const iv = setInterval(() => {
+            $("descSpeakerName").textContent = pool[cryptoInt(pool.length)].name;
+            playTick(560);
+            if (++n >= (REDUCED_MOTION ? 2 : 12)) {
+                clearInterval(iv);
+                descBusy = false;
+                descSpeaker = pick.name;
+                $("descSpeakerName").textContent = pick.name;
+                c.descExcl.push(pick.id);
+                save(); renderDescCounters();
+                playFanfare();
+            }
+        }, 75);
+    }
+
+    function descResetAll() {
+        if (tm.iv) { clearInterval(tm.iv); tm.iv = null; }
+        tm.phase = "idle"; tm.acc = 0;
+        descSpeaker = ""; descCurrent = null;
+        const sp = document.getElementById("descSpeakerName"); if (sp) sp.textContent = "—";
+        const tx = document.getElementById("descTopicText"); if (tx) { tx.classList.remove("hidden"); tx.textContent = ""; }
+        const im = document.getElementById("descImage"); if (im) im.classList.add("hidden");
+        const lk = document.getElementById("descSearchLink"); if (lk) lk.classList.add("hidden");
+    }
+
+    // ----- rendering -----
+    function renderDescCounters() {
+        const c = cls();
+        const present = presentStudents();
+        const called = present.filter((s) => c.descExcl.includes(s.id)).length;
+        $("descSpeakerResetBtn").textContent = t("desc.speakerReset", { n: called });
+        $("descSpeakerResetBtn").disabled = called === 0;
+        $("descSpeakerBtn").disabled = present.length === 0;
+        $("descTopicsLeft").textContent = t("desc.topicsLeft", { n: descBag.length || state.picTopics.length });
+        $("descDrawImageBtn").disabled = descImages.length === 0;
+        $("descClearImagesBtn").textContent = t("desc.clearImages", { n: descImages.length });
+        $("descClearImagesBtn").disabled = descImages.length === 0;
+    }
+
+    function renderDescLog() {
+        const c = cls();
+        const box = $("descLogList");
+        box.innerHTML = "";
+        if (!c.descLog.length) {
+            const d = document.createElement("div");
+            d.className = "col-span-full text-center py-6 bg-slate-950/40 border border-dashed border-slate-800 rounded-2xl text-slate-500 text-xs sm:text-sm";
+            d.textContent = t("desc.logEmpty");
+            box.appendChild(d);
+            return;
+        }
+        c.descLog.forEach((e) => {
+            const row = document.createElement("div");
+            row.className = "bg-slate-950/85 border border-slate-800/90 rounded-2xl p-3 flex items-center gap-3 animate-pop-in";
+            const dot = document.createElement("span");
+            dot.className = "w-3 h-3 rounded-full shrink-0 " + TZ_DOT[zoneOf(e.s)];
+            const mid = document.createElement("div");
+            mid.className = "min-w-0 flex-1";
+            const nm = document.createElement("div");
+            nm.className = "text-sm font-bold text-white truncate"; nm.textContent = e.n || "–";
+            const tp = document.createElement("div");
+            tp.className = "text-xs text-slate-400 truncate"; tp.textContent = e.t || "";
+            mid.appendChild(nm); mid.appendChild(tp);
+            const tmEl = document.createElement("span");
+            tmEl.className = "text-base font-black tabular-nums text-slate-100"; tmEl.textContent = fmtTime(e.s);
+            row.appendChild(dot); row.appendChild(mid); row.appendChild(tmEl);
+            box.appendChild(row);
+        });
+    }
+
+    function renderDesc() {
+        // topic select
+        const sel = $("descTopicSelect");
+        const keep = sel.value;
+        sel.innerHTML = "";
+        const ph = document.createElement("option");
+        ph.value = ""; ph.textContent = t("desc.pickTopic");
+        sel.appendChild(ph);
+        state.picTopics.forEach((tp, i) => {
+            const o = document.createElement("option");
+            o.value = String(i); o.textContent = tp;
+            sel.appendChild(o);
+        });
+        sel.value = keep;
+        if (!descCurrent && !$("descTopicText").textContent) $("descTopicText").textContent = t("desc.noTopic");
+        if (!descCurrent) $("descTopicText").textContent = t("desc.noTopic");
+        renderDescCounters();
+        renderDescLog();
+        renderTimerSettings();
+        renderTimer();
+        if (!$("descPhrases").childElementCount) {
+            window.PIC_PHRASES.forEach((g) => {
+                const card = document.createElement("div");
+                card.className = "bg-slate-900/70 border border-slate-800 rounded-xl p-3";
+                const h = document.createElement("div");
+                h.className = "text-[11px] font-extrabold uppercase tracking-wider text-amber-300 mb-1.5"; h.textContent = g.h;
+                card.appendChild(h);
+                g.p.forEach((line) => {
+                    const li = document.createElement("div");
+                    li.className = "text-xs text-slate-200 leading-relaxed"; li.textContent = line;
+                    card.appendChild(li);
+                });
+                $("descPhrases").appendChild(card);
+            });
+        }
+    }
+
+    async function copyDescLog() {
+        const c = cls();
+        if (!c.descLog.length) return;
+        const lines = [...c.descLog].reverse().map((e) => `${e.n} – ${fmtTime(e.s)}${e.t ? " – " + e.t : ""}`);
+        try { await navigator.clipboard.writeText(lines.join("\n")); toast(t("toast.copied")); }
+        catch (e) { toast(t("toast.copyFail")); }
+    }
+
+    // ==========================================
     // MODE SWITCH
     // ==========================================
-    const MODE_ON_WHEEL = "from-indigo-600 to-purple-600 shadow-indigo-600/30";
-    const MODE_ON_PAIRS = "from-pink-600 to-indigo-600 shadow-pink-600/30";
+    const MODE_ON = {
+        wheel: "from-indigo-600 to-purple-600 shadow-indigo-600/30",
+        pairs: "from-pink-600 to-indigo-600 shadow-pink-600/30",
+        desc: "from-amber-500 to-pink-600 shadow-amber-600/30"
+    };
 
     function setMode(mode) {
         activeMode = mode;
-        const wBtn = $("modeWheelBtn"), pBtn = $("modePairsBtn");
         const base = "px-3.5 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition flex items-center gap-1.5 active:scale-95 ";
         const off = "text-slate-400 hover:text-white";
-        wBtn.className = base + (mode === "wheel" ? `bg-gradient-to-r ${MODE_ON_WHEEL} text-white shadow-md` : off);
-        pBtn.className = base + (mode === "pairs" ? `bg-gradient-to-r ${MODE_ON_PAIRS} text-white shadow-md` : off);
-        wBtn.setAttribute("aria-selected", String(mode === "wheel"));
-        pBtn.setAttribute("aria-selected", String(mode === "pairs"));
-        $("sectionWheel").classList.toggle("hidden", mode !== "wheel");
-        $("sectionWheel").classList.toggle("flex", mode === "wheel");
-        $("sectionPairs").classList.toggle("hidden", mode !== "pairs");
-        $("sectionPairs").classList.toggle("flex", mode === "pairs");
+        const btn = { wheel: $("modeWheelBtn"), pairs: $("modePairsBtn"), desc: $("modeDescBtn") };
+        const sec = { wheel: $("sectionWheel"), pairs: $("sectionPairs"), desc: $("sectionDesc") };
+        Object.keys(btn).forEach((k) => {
+            btn[k].className = base + (k === mode ? `bg-gradient-to-r ${MODE_ON[k]} text-white shadow-md` : off);
+            btn[k].setAttribute("aria-selected", String(k === mode));
+            sec[k].classList.toggle("hidden", k !== mode);
+            sec[k].classList.toggle("flex", k === mode);
+        });
         if (mode === "wheel") resizeCanvas();
+        if (mode === "desc") renderDesc();
     }
 
     // ==========================================
@@ -1303,6 +1698,7 @@
     function bind() {
         $("modeWheelBtn").addEventListener("click", () => setMode("wheel"));
         $("modePairsBtn").addEventListener("click", () => setMode("pairs"));
+        $("modeDescBtn").addEventListener("click", () => setMode("desc"));
 
         $("mainSpinBtn").addEventListener("click", startSpin);
         $("centerSpinBtn").addEventListener("click", startSpin);
@@ -1428,8 +1824,34 @@
             if (["input", "textarea", "select", "button"].includes(tag) || e.target.isContentEditable) return;
             if (e.target.getAttribute && e.target.getAttribute("role") === "switch") return;
             e.preventDefault();
-            if (activeMode === "wheel") startSpin(); else spinPairSlot();
+            if (activeMode === "wheel") startSpin();
+            else if (activeMode === "pairs") spinPairSlot();
+            else timerMain();
         });
+
+        // picture description
+        $("timerMainBtn").addEventListener("click", timerMain);
+        $("timerStopBtn").addEventListener("click", timerStop);
+        $("timerResetBtn").addEventListener("click", timerReset);
+        $("descDrawTopicBtn").addEventListener("click", drawTopic);
+        $("descDrawImageBtn").addEventListener("click", drawImage);
+        $("descSpeakerBtn").addEventListener("click", drawSpeaker);
+        $("descSpeakerResetBtn").addEventListener("click", () => { cls().descExcl = []; save(); renderDescCounters(); });
+        $("descEditTopicsBtn").addEventListener("click", editPicTopics);
+        $("descReshuffleBtn").addEventListener("click", () => { descBag = []; renderDescCounters(); });
+        $("descTopicSelect").addEventListener("change", (e) => {
+            if (e.target.value === "") return;
+            const topic = state.picTopics[Number(e.target.value)];
+            if (!topic) return;
+            descBag = descBag.filter((x) => x !== topic);
+            showTopic(topic, true);
+        });
+        $("descLoadImagesBtn").addEventListener("click", () => $("descImageFile").click());
+        $("descImageFile").addEventListener("change", (e) => { if (e.target.files.length) loadImages(e.target.files); e.target.value = ""; });
+        $("descClearImagesBtn").addEventListener("click", clearImages);
+        ["setRedEnd", "setYellowEnd", "setMax", "setPrep"].forEach((id) => $(id).addEventListener("change", readTimeSettings));
+        $("descLogCopyBtn").addEventListener("click", copyDescLog);
+        $("descLogClearBtn").addEventListener("click", () => { cls().descLog = []; save(); renderDescLog(); toast(t("toast.listCleared")); });
 
         window.addEventListener("resize", resizeCanvas);
         window.addEventListener("hashchange", handleIncomingShare);
