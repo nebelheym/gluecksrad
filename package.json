@@ -1,0 +1,14 @@
+{
+  "name": "gluecksrad",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Glücksrad & Paar-Generator für Lehrkräfte – statisch, ohne Server, ohne Tracking",
+  "scripts": {
+    "build:css": "tailwindcss -c tailwind.config.js -i src/input.css -o css/styles.css --minify",
+    "serve": "python3 -m http.server 8080"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  },
+  "license": "MIT"
+}

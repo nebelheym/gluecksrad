@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glücksrad – Wer geht an die Tafel?</title>
+    <meta name="description" content="Glücksrad, Slot-Maschine und Gruppen-Generator für Lehrkräfte. Kostenlos, ohne Anmeldung, ohne Tracking, funktioniert offline.">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="antialiased selection:bg-indigo-500 selection:text-white">
+
+    <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50 w-full h-full" aria-hidden="true"></canvas>
+
+    <!-- Generic dialog (prompt / confirm / textarea) -->
+    <dialog id="dlg" class="bg-slate-900 border border-slate-700 rounded-2xl p-0 w-[min(92vw,26rem)] shadow-2xl">
+        <form id="dlgForm" class="p-5">
+            <h3 id="dlgTitle" class="text-base font-bold text-white mb-1"></h3>
+            <p id="dlgHint" class="text-xs text-slate-400 mb-3"></p>
+            <input id="dlgInput" type="text" maxlength="40" class="w-full bg-slate-950 border border-slate-700 focus:border-indigo-500 focus:outline-none rounded-xl px-3.5 py-2.5 text-sm text-white mb-4">
+            <textarea id="dlgText" rows="9" class="w-full bg-slate-950 border border-slate-700 focus:border-indigo-500 focus:outline-none rounded-xl px-3.5 py-2.5 text-sm text-white mb-4 custom-scrollbar"></textarea>
+            <div class="flex items-center justify-end gap-2">
+                <button type="button" id="dlgCancel" data-i18n="dlg.cancel" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition"></button>
+                <button type="submit" id="dlgOk" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <input id="importFile" type="file" accept="application/json,.json" class="hidden">
+
+    <header class="border-b border-slate-800/80 bg-slate-900/75 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-[1600px] mx-auto px-3 sm:px-5 py-2 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-md shadow-indigo-500/25 shrink-0" aria-hidden="true">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="2"></circle>
+                        <path stroke-linecap="round" d="M12 3v7M12 14v7M3 12h7M14 12h7"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 id="appTitle" class="text-sm sm:text-base font-extrabold tracking-tight text-white leading-tight"></h1>
+                    <p data-i18n="app.subtitle" class="text-[11px] text-slate-400 hidden sm:block"></p>
+                </div>
+            </div>
+
+            <div class="flex items-center bg-slate-950/90 p-1 rounded-xl border border-slate-800" role="tablist">
+                <button id="modeWheelBtn" type="button" role="tab" class="px-3.5 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition flex items-center gap-1.5 active:scale-95">
+                    <span aria-hidden="true">🎡</span><span data-i18n="mode.wheel"></span>
+                </button>
+                <button id="modePairsBtn" type="button" role="tab" class="px-3.5 py-1.5 rounded-lg font-bold text-xs sm:text-sm transition flex items-center gap-1.5 active:scale-95">
+                    <span aria-hidden="true">🎰</span><span data-i18n="mode.pairs"></span>
+                </button>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+                <select id="langSelect" aria-label="Language" class="bg-slate-800/90 border border-slate-700 text-slate-200 text-xs font-semibold rounded-lg px-2 py-1.5 focus:outline-none focus:border-indigo-500">
+                    <option value="de">Deutsch</option>
+                    <option value="en">English</option>
+                    <option value="ru">Русский</option>
+                </select>
+                <button id="fullscreenBtn" type="button" data-i18n-title="fullscreen.title" class="px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 text-slate-200 text-xs font-semibold transition active:scale-95">⛶</button>
+                <button id="soundToggleBtn" type="button" data-i18n-title="sound.title" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 text-slate-200 text-xs font-semibold transition active:scale-95">
+                    <span id="soundIcon" aria-hidden="true">🔊</span>
+                    <span id="soundStatusText" class="hidden md:inline"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1600px] mx-auto px-3 sm:px-5 py-3.5">
+        <div class="flex flex-col lg:flex-row gap-4 items-start">
+
+            <div class="w-full lg:flex-1 min-w-0 flex flex-col gap-4">
+
+                <!-- ============ MODE 1: WHEEL ============ -->
+                <section id="sectionWheel" class="flex flex-col items-center bg-slate-900/55 border border-slate-800/90 rounded-3xl p-3 sm:p-5 shadow-2xl backdrop-blur-sm relative overflow-hidden">
+
+                    <div class="w-full flex flex-wrap items-center justify-between gap-2 bg-slate-950/75 border border-slate-800/90 rounded-2xl px-3.5 py-2 mb-2">
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <label class="flex items-center gap-2 cursor-pointer select-none">
+                                <input id="excludeWheelCheckbox" type="checkbox" class="w-4 h-4 rounded bg-slate-900 border-slate-700 accent-indigo-500">
+                                <span data-i18n="wheel.exclude" class="text-xs font-bold text-slate-200"></span>
+                            </label>
+                            <button id="resetWheelRoundBtn" type="button" class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-bold transition active:scale-95 disabled:opacity-40 disabled:pointer-events-none"></button>
+                        </div>
+                        <div class="flex items-center gap-2 ml-auto">
+                            <span data-i18n="wheel.pointer" class="text-[11px] uppercase tracking-wider font-semibold text-slate-400 hidden sm:inline"></span>
+                            <span id="currentPointerName" class="text-xs sm:text-sm font-extrabold text-indigo-300 bg-indigo-950/80 border border-indigo-700/50 px-2.5 py-0.5 rounded-lg truncate max-w-[180px] sm:max-w-[240px]"></span>
+                            <span class="text-xs font-semibold text-slate-400 pl-1">
+                                <span data-i18n="wheel.active"></span> <strong id="wheelActiveCounter" class="text-emerald-400 font-extrabold"></strong>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="w-full flex flex-col xl:flex-row items-center justify-center gap-6 my-1">
+
+                        <div class="relative wheel-stage-size flex items-center justify-center shrink-0">
+                            <div id="wheelPointer" class="absolute -top-3.5 z-20 pointer-events-none drop-shadow-[0_8px_14px_rgba(0,0,0,0.8)]" aria-hidden="true">
+                                <svg width="54" height="62" viewBox="0 0 46 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M23 52L6 16C3.5 10.5 7.5 4 13.5 4H32.5C38.5 4 42.5 10.5 40 16L23 52Z" fill="url(#pointerGrad)" stroke="#ffffff" stroke-width="3"/>
+                                    <circle cx="23" cy="14" r="5" fill="#0f172a"/>
+                                    <defs>
+                                        <linearGradient id="pointerGrad" x1="23" y1="4" x2="23" y2="52" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#f43f5e"/><stop offset="1" stop-color="#be123c"/>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                            </div>
+
+                            <canvas id="wheelCanvas" class="w-full h-full wheel-glow cursor-pointer select-none" role="img"></canvas>
+
+                            <button id="centerSpinBtn" type="button" class="absolute w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-b from-slate-800 via-slate-900 to-slate-950 border-4 border-white shadow-[0_0_35px_rgba(0,0,0,0.9)] flex flex-col items-center justify-center text-white font-extrabold uppercase tracking-wider hover:scale-105 active:scale-95 transition z-10 group disabled:opacity-60 disabled:pointer-events-none">
+                                <span data-i18n="wheel.center1" class="text-indigo-400 group-hover:text-indigo-300 transition text-[10px] sm:text-xs font-bold"></span>
+                                <span data-i18n="wheel.center2" class="text-white text-sm sm:text-base font-black tracking-wide"></span>
+                            </button>
+                        </div>
+
+                        <div class="w-full xl:max-w-sm flex flex-col items-center xl:items-stretch gap-4">
+                            <button id="mainSpinBtn" type="button" class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500 text-white font-black text-lg sm:text-xl shadow-2xl shadow-indigo-600/40 border border-white/20 flex items-center justify-center gap-3 transition transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none">
+                                <span aria-hidden="true">🎡</span><span data-i18n="wheel.spin"></span>
+                            </button>
+
+                            <div id="winnerCard" class="hidden w-full bg-gradient-to-br from-indigo-950 via-slate-900 to-purple-950 border-2 border-indigo-400/80 rounded-3xl p-5 shadow-2xl animate-pop-in" aria-live="polite">
+                                <div class="text-center">
+                                    <span data-i18n="winner.label" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 mb-2"></span>
+                                    <h2 id="winnerNameText" class="text-2xl sm:text-4xl font-black text-white tracking-tight break-words my-1"></h2>
+                                    <p id="winnerSubStatusText" class="text-xs text-indigo-300 mt-1 mb-4"></p>
+                                    <div class="flex flex-wrap items-center justify-center gap-2">
+                                        <button id="excludeWinnerBtn" type="button" data-i18n="winner.markCalled" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg transition active:scale-95"></button>
+                                        <button id="keepWinnerBtn" type="button" data-i18n="winner.keep" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-bold text-xs transition active:scale-95"></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="historyContainer" class="w-full bg-slate-950/60 border border-slate-800/80 rounded-2xl p-3.5 hidden">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span data-i18n="history.title" class="text-[11px] font-bold uppercase tracking-wider text-slate-400"></span>
+                                    <button id="clearHistoryBtn" type="button" data-i18n="history.clear" class="text-[11px] font-semibold text-slate-400 hover:text-rose-400 transition"></button>
+                                </div>
+                                <div id="historyBadges" class="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto custom-scrollbar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============ MODE 2: PAIRS & GROUPS ============ -->
+                <section id="sectionPairs" class="hidden flex-col gap-4">
+                    <div class="bg-slate-900/60 border border-slate-800/90 rounded-3xl p-4 sm:p-6 shadow-2xl backdrop-blur-sm">
+
+                        <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-950/80 border border-slate-800/90 rounded-2xl px-4 py-2.5 mb-5">
+                            <div class="flex items-center gap-3 flex-wrap">
+                                <span data-i18n="pairs.title" class="text-xs sm:text-sm font-black uppercase tracking-wider text-pink-400"></span>
+                                <span class="text-slate-700" aria-hidden="true">|</span>
+                                <label class="flex items-center gap-2 cursor-pointer select-none">
+                                    <input id="excludePairsCheckbox" type="checkbox" class="w-4 h-4 rounded bg-slate-900 border-slate-700 accent-pink-500">
+                                    <span data-i18n="pairs.exclude" class="text-xs font-bold text-slate-200"></span>
+                                </label>
+                            </div>
+                            <div class="flex items-center gap-2.5 ml-auto">
+                                <span class="text-xs font-semibold text-slate-300">
+                                    <span data-i18n="pairs.pool"></span> <strong id="pairPoolCounter" class="text-emerald-400 font-extrabold text-sm"></strong>
+                                </span>
+                                <button id="resetPairPoolBtn" type="button" class="px-3 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-bold transition active:scale-95 disabled:opacity-40 disabled:pointer-events-none"></button>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-2 border-indigo-500/50 rounded-3xl p-5 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.85)] relative overflow-hidden">
+                            <div class="flex items-center justify-center gap-3 mb-4">
+                                <span class="w-2.5 h-2.5 rounded-full bg-pink-500 animate-pulse"></span>
+                                <span data-i18n="pairs.generator" class="text-xs sm:text-sm font-black uppercase tracking-widest text-slate-300"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-11 gap-4 sm:gap-6 items-center">
+                                <div class="md:col-span-5 flex flex-col items-center">
+                                    <span data-i18n="pairs.partnerA" class="text-xs sm:text-sm font-extrabold uppercase tracking-widest text-indigo-400 mb-2"></span>
+                                    <div id="slotWindow1" class="w-full h-44 sm:h-52 rounded-3xl border-2 border-indigo-500/50 slot-window flex flex-col items-center justify-between py-4 px-4 overflow-hidden relative transition-all duration-300">
+                                        <div id="slotReel1Top" class="text-sm sm:text-base text-slate-600 font-semibold truncate w-full text-center select-none">—</div>
+                                        <div class="w-full border-y border-indigo-500/20 py-3 my-auto flex items-center justify-center">
+                                            <div id="slotReel1Main" class="text-2xl sm:text-4xl font-black text-white truncate w-full text-center tracking-tight transition-transform">—</div>
+                                        </div>
+                                        <div id="slotReel1Bottom" class="text-sm sm:text-base text-slate-600 font-semibold truncate w-full text-center select-none">—</div>
+                                    </div>
+                                </div>
+
+                                <div class="md:col-span-1 flex items-center justify-center py-1">
+                                    <div id="slotCenterBadge" class="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-600 flex flex-col items-center justify-center shadow-2xl shadow-pink-500/30 border-2 border-white/25">
+                                        <span class="text-2xl sm:text-3xl" aria-hidden="true">💬</span>
+                                        <span data-i18n="pairs.dialog" class="text-[10px] font-black uppercase tracking-tighter text-white/90"></span>
+                                    </div>
+                                </div>
+
+                                <div class="md:col-span-5 flex flex-col items-center">
+                                    <span data-i18n="pairs.partnerB" class="text-xs sm:text-sm font-extrabold uppercase tracking-widest text-pink-400 mb-2"></span>
+                                    <div id="slotWindow2" class="w-full h-44 sm:h-52 rounded-3xl border-2 border-pink-500/50 slot-window flex flex-col items-center justify-between py-4 px-4 overflow-hidden relative transition-all duration-300">
+                                        <div id="slotReel2Top" class="text-sm sm:text-base text-slate-600 font-semibold truncate w-full text-center select-none">—</div>
+                                        <div class="w-full border-y border-pink-500/20 py-3 my-auto flex items-center justify-center">
+                                            <div id="slotReel2Main" class="text-2xl sm:text-4xl font-black text-white truncate w-full text-center tracking-tight transition-transform">—</div>
+                                        </div>
+                                        <div id="slotReel2Bottom" class="text-sm sm:text-base text-slate-600 font-semibold truncate w-full text-center select-none">—</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="slotTopicBox" class="hidden mt-5 text-center animate-pop-in" aria-live="polite">
+                                <span data-i18n="pairs.topic" class="text-[11px] font-bold uppercase tracking-widest text-slate-400"></span>
+                                <div id="slotTopic" class="text-xl sm:text-3xl font-black text-amber-300 mt-1 break-words"></div>
+                            </div>
+
+                            <div class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 bg-slate-950/60 border border-slate-800/80 rounded-2xl px-4 py-2.5">
+                                <label class="flex items-center gap-2 cursor-pointer select-none">
+                                    <input id="useTopicsCheckbox" type="checkbox" class="w-4 h-4 rounded bg-slate-900 border-slate-700 accent-amber-500">
+                                    <span data-i18n="pairs.useTopics" class="text-xs font-bold text-slate-200"></span>
+                                </label>
+                                <button id="editTopicsBtn" type="button" data-i18n="pairs.editTopics" class="text-xs font-semibold text-amber-300 hover:text-amber-200 underline underline-offset-2"></button>
+                                <label class="flex items-center gap-2 select-none">
+                                    <span data-i18n="pairs.groupSize" class="text-xs font-bold text-slate-200"></span>
+                                    <select id="groupSizeSelect" class="bg-slate-900 border border-slate-700 text-slate-100 text-xs font-bold rounded-lg px-2 py-1 focus:outline-none focus:border-indigo-500">
+                                        <option value="2" data-i18n="pairs.size2"></option>
+                                        <option value="3" data-i18n="pairs.size3"></option>
+                                        <option value="4" data-i18n="pairs.size4"></option>
+                                    </select>
+                                </label>
+                            </div>
+
+                            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <button id="spinSlotPairBtn" type="button" class="py-4 px-6 rounded-2xl bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500 text-white font-black text-base sm:text-xl shadow-2xl shadow-pink-600/35 border border-white/20 flex items-center justify-center gap-3 transition transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none">
+                                    <span class="text-2xl" aria-hidden="true">🎰</span><span data-i18n="pairs.draw"></span>
+                                </button>
+                                <button id="splitAllClassBtn" type="button" class="py-4 px-6 rounded-2xl bg-slate-800/95 hover:bg-slate-700 border-2 border-indigo-500/50 text-indigo-200 font-black text-base sm:text-xl shadow-xl flex items-center justify-center gap-3 transition transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:pointer-events-none">
+                                    <span class="text-2xl" aria-hidden="true">👥</span><span data-i18n="pairs.split"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 pt-4 border-t border-slate-800">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <div class="flex items-center gap-2">
+                                    <h3 data-i18n="pairs.history" class="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-slate-200"></h3>
+                                    <span id="pairsHistoryCountBadge" class="px-2 py-0.5 text-xs font-bold rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">0</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button id="copyPairsBtn" type="button" data-i18n="pairs.copy" class="px-3 py-1 rounded-xl bg-slate-800 hover:bg-indigo-900/60 border border-slate-700 hover:border-indigo-500/40 text-slate-300 hover:text-indigo-200 text-xs font-semibold transition"></button>
+                                    <button id="clearPairsHistoryBtn" type="button" data-i18n="pairs.clear" class="px-3 py-1 rounded-xl bg-slate-800 hover:bg-rose-950/60 border border-slate-700 hover:border-rose-500/40 text-slate-300 hover:text-rose-300 text-xs font-semibold transition"></button>
+                                </div>
+                            </div>
+                            <div id="pairsSessionList" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2.5"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ============ SIDEBAR ============ -->
+            <aside class="w-full lg:w-[320px] xl:w-[340px] shrink-0 bg-slate-900/65 border border-slate-800/90 rounded-3xl p-3.5 shadow-2xl backdrop-blur-sm flex flex-col">
+
+                <div class="pb-2.5 border-b border-slate-800">
+                    <label for="classSelect" data-i18n="class.label" class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1"></label>
+                    <div class="flex items-center gap-1.5">
+                        <select id="classSelect" class="flex-1 min-w-0 bg-slate-950/90 border border-slate-800 focus:border-indigo-500 focus:outline-none rounded-xl px-2.5 py-1.5 text-xs font-semibold text-white"></select>
+                        <button id="newClassBtn" type="button" data-i18n-title="class.new" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-bold transition active:scale-95">＋</button>
+                        <button id="renameClassBtn" type="button" data-i18n-title="class.rename" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs transition active:scale-95">✏️</button>
+                        <button id="deleteClassBtn" type="button" data-i18n-title="class.delete" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-700 border border-slate-700 text-slate-200 text-xs transition active:scale-95">🗑️</button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between gap-2 py-2.5">
+                    <div class="flex items-center gap-2">
+                        <h2 data-i18n="side.title" class="text-sm font-extrabold text-white"></h2>
+                        <span id="attendanceCounter" class="bg-slate-950 border border-slate-800 px-2 py-0.5 rounded-lg text-xs font-extrabold text-emerald-400"></span>
+                    </div>
+                    <button id="toggleEditModeBtn" type="button" data-i18n-title="side.editTitle" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-semibold transition flex items-center gap-1 active:scale-95">
+                        <span aria-hidden="true">✏️</span><span id="editModeBtnText"></span>
+                    </button>
+                </div>
+
+                <div id="editModeBanner" data-i18n="side.editBanner" class="hidden mb-2 p-2.5 rounded-xl bg-indigo-950/60 border border-indigo-500/40 text-[11px] text-indigo-200 font-medium"></div>
+
+                <form id="addStudentForm" class="flex gap-1.5">
+                    <input id="newStudentInput" type="text" maxlength="40" data-i18n-placeholder="side.addPlaceholder" class="flex-1 min-w-0 bg-slate-950/90 border border-slate-800 focus:border-indigo-500 focus:outline-none rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 transition">
+                    <button type="submit" data-i18n-title="dlg.add" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shrink-0 active:scale-95">+</button>
+                    <button id="pasteListBtn" type="button" data-i18n="side.paste" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold text-[11px] transition shrink-0 active:scale-95"></button>
+                </form>
+
+                <div class="flex items-center gap-1.5 my-2">
+                    <div class="relative flex-1">
+                        <input id="searchStudentInput" type="text" data-i18n-placeholder="side.search" class="w-full bg-slate-950/70 border border-slate-800/90 focus:border-indigo-500 focus:outline-none rounded-lg pl-2.5 pr-6 py-1 text-xs text-white placeholder-slate-500 transition">
+                    </div>
+                    <button id="allPresentBtn" type="button" data-i18n="side.allPresent" data-i18n-title="side.allPresentTitle" class="px-2 py-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold transition shrink-0"></button>
+                    <button id="allAbsentBtn" type="button" data-i18n="side.allAbsent" data-i18n-title="side.allAbsentTitle" class="px-2 py-1 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/30 text-rose-300 text-[11px] font-bold transition shrink-0"></button>
+                </div>
+
+                <div id="statusToast" class="hidden mb-2 px-3 py-1.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-200 text-xs font-medium" role="status"></div>
+
+                <div id="studentListContainer" class="custom-scrollbar overflow-y-auto max-h-[520px] pr-1 space-y-1.5"></div>
+
+                <div class="mt-3 pt-3 border-t border-slate-800">
+                    <div class="flex items-center gap-1.5">
+                        <button id="exportBtn" type="button" data-i18n="data.export" class="flex-1 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-[11px] font-semibold transition"></button>
+                        <button id="importBtn" type="button" data-i18n="data.import" class="flex-1 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-[11px] font-semibold transition"></button>
+                    </div>
+                    <p data-i18n="data.privacy" class="mt-2 text-[10.5px] leading-snug text-slate-500"></p>
+                </div>
+            </aside>
+        </div>
+
+        <p data-i18n="footer.text" class="text-center text-[11px] text-slate-600 mt-5"></p>
+    </main>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
