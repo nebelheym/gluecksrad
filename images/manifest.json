@@ -2,211 +2,104 @@
  "t02": {
   "title": "Haustiere",
   "files": [
-   "001.jpg",
-   "002.jpg",
-   "003.jpg",
-   "004.jpg",
-   "005.jpg",
-   "006.jpg",
-   "007.jpg",
-   "008.jpg",
-   "009.jpg",
-   "010.jpg",
-   "011.jpg",
-   "012.jpg",
-   "013.jpg",
-   "014.jpg",
-   "015.jpg"
+   "t02_001.jpg",
+   "t02_002.jpg",
+   "t02_003.jpg",
+   "t02_004.jpg",
+   "t02_005.jpg",
+   "t02_006.jpg",
+   "t02_007.jpg",
+   "t02_008.jpg",
+   "t02_009.jpg",
+   "t02_012.jpg",
+   "t02_014.jpg",
+   "t02_015.jpg"
   ]
  },
  "t03": {
   "title": "Lernen, Schule und Bildung",
   "files": [
-   "001.jpg",
-   "002.jpg",
-   "003.jpg",
-   "004.jpg",
-   "005.jpg",
-   "006.jpg",
-   "007.jpg",
-   "008.jpg",
-   "009.jpg",
-   "010.jpg",
-   "011.jpg",
-   "012.jpg",
-   "013.jpg",
-   "014.jpg",
-   "015.jpg"
-  ]
- },
- "t04": {
-  "title": "Freizeit zu Hause",
-  "files": [
-   "001.jpg",
-   "002.jpg",
-   "004.jpg",
-   "005.jpg",
-   "006.jpg",
-   "007.jpg",
-   "008.jpg",
-   "011.jpg",
-   "012.jpg"
+   "t03_001.jpg",
+   "t03_002.jpg",
+   "t03_004.jpg",
+   "t03_005.jpg",
+   "t03_006.jpg",
+   "t03_007.jpg",
+   "t03_010.jpg",
+   "t03_011.jpg",
+   "t03_012.jpg",
+   "t03_013.jpg"
   ]
  },
  "t05": {
-  "title": "Familie und Freizeit",
+  "title": "Familie, Kinder und Freizeit",
   "files": [
-   "001.jpg",
-   "002.jpg",
-   "003.jpg",
-   "004.jpg",
-   "006.jpg",
-   "008.jpg",
-   "009.jpg",
-   "010.jpg",
-   "011.jpg",
-   "012.jpg",
-   "013.jpg",
-   "014.jpg",
-   "015.jpg"
-  ]
- },
- "t06": {
-  "title": "Kindergarten und Sport mit Kindern",
-  "files": [
-   "001.jpg",
-   "005.jpg",
-   "006.jpg",
-   "007.jpg",
-   "008.jpg",
-   "009.jpg",
-   "010.jpg",
-   "012.jpg",
-   "015.jpg"
+   "t04_004.jpg",
+   "t04_006.jpg",
+   "t05_001.jpg",
+   "t05_002.jpg",
+   "t05_003.jpg",
+   "t05_004.jpg",
+   "t05_006.jpg",
+   "t05_008.jpg",
+   "t05_009.jpg",
+   "t05_011.jpg",
+   "t05_012.jpg",
+   "t05_013.jpg",
+   "t05_014.jpg",
+   "t05_015.jpg",
+   "t06_006.jpg",
+   "t06_008.jpg"
   ]
  },
  "t07": {
   "title": "Arbeit im Büro und am Computer",
   "files": [
-   "001.jpg",
-   "002.jpg",
-   "003.jpg",
-   "004.jpg",
-   "005.jpg",
-   "006.jpg",
-   "009.jpg",
-   "010.jpg",
-   "011.jpg",
-   "014.jpg",
-   "015.jpg"
+   "t07_001.jpg",
+   "t07_002.jpg",
+   "t07_003.jpg",
+   "t07_004.jpg",
+   "t07_006.jpg",
+   "t07_011.jpg",
+   "t07_015.jpg"
   ]
  },
  "t09": {
   "title": "Müdigkeit und Schlaf",
   "files": [
-   "001.jpg",
-   "003.jpg",
-   "004.jpg",
-   "005.jpg",
-   "006.jpg",
-   "007.jpg",
-   "009.jpg",
-   "010.jpg",
-   "011.jpg",
-   "012.jpg",
-   "013.jpg",
-   "014.jpg",
-   "015.jpg"
-  ]
- },
- "t14": {
-  "title": "Schach und Brettspiele",
-  "files": [
-   "001.jpg",
-   "002.jpg",
-   "003.jpg",
-   "004.jpg",
-   "005.jpg",
-   "006.jpg",
-   "007.jpg",
-   "009.jpg",
-   "010.jpg",
-   "011.jpg",
-   "012.jpg",
-   "013.jpg"
-  ]
- },
- "t16": {
-  "title": "Reisen und öffentliche Verkehrsmittel",
-  "files": [
-   "001.jpg",
-   "002.jpg",
-   "003.jpg",
-   "004.jpg",
-   "005.jpg",
-   "006.jpg",
-   "007.jpg",
-   "008.jpg",
-   "009.jpg",
-   "010.jpg",
-   "011.jpg",
-   "012.jpg",
-   "013.jpg",
-   "014.jpg",
-   "015.jpg"
+   "t09_001.jpg",
+   "t09_003.jpg",
+   "t09_009.jpg",
+   "t09_012.jpg",
+   "t09_013.jpg",
+   "t09_014.jpg",
+   "t09_015.jpg"
   ]
  },
  "t19": {
   "title": "Großeltern und Generationen",
   "files": [
-   "001.jpg",
-   "002.jpg",
-   "003.jpg",
-   "004.jpg",
-   "006.jpg",
-   "007.jpg",
-   "008.jpg",
-   "009.jpg",
-   "010.jpg",
-   "011.jpg",
-   "012.jpg",
-   "013.jpg",
-   "014.jpg",
-   "015.jpg"
+   "t19_004.jpg",
+   "t19_006.jpg",
+   "t19_007.jpg",
+   "t19_010.jpg",
+   "t19_012.jpg"
   ]
  },
  "t21": {
-  "title": "Musik",
+  "title": "Musik auf der Straße",
   "files": [
-   "001.jpg",
-   "002.jpg",
-   "003.jpg",
-   "004.jpg",
-   "005.jpg",
-   "006.jpg",
-   "007.jpg",
-   "008.jpg",
-   "009.jpg",
-   "010.jpg",
-   "011.jpg",
-   "012.jpg",
-   "013.jpg",
-   "014.jpg",
-   "015.jpg"
-  ]
- },
- "t24": {
-  "title": "Winter und Schnee",
-  "files": [
-   "002.jpg",
-   "004.jpg",
-   "007.jpg",
-   "008.jpg",
-   "009.jpg",
-   "010.jpg",
-   "012.jpg",
-   "014.jpg",
-   "015.jpg"
+   "t21_002.jpg",
+   "t21_004.jpg",
+   "t21_005.jpg",
+   "t21_006.jpg",
+   "t21_007.jpg",
+   "t21_008.jpg",
+   "t21_009.jpg",
+   "t21_010.jpg",
+   "t21_011.jpg",
+   "t21_012.jpg",
+   "t21_013.jpg"
   ]
  }
 }
