@@ -65,6 +65,25 @@ TOPICS = {
 }
 
 
+# Zusätzliche klassische Prüfungsthemen (Szenen mit Personen) / extra classic exam topics
+NEW_TOPICS = {
+    "Im Supermarkt und Einkaufen": ["woman shopping supermarket vegetables", "family shopping cart supermarket", "customer paying cashier", "people shopping at market"],
+    "Beim Arzt / Krank sein": ["doctor examining patient", "sick woman in bed with fever", "pharmacist advising customer", "nurse talking to patient"],
+    "Im Restaurant und Café": ["waiter serving guests restaurant", "friends having coffee cafe", "family eating restaurant", "people ordering at cafe"],
+    "Reisen und Verkehrsmittel": ["family at airport with suitcases", "passengers waiting at train station", "people boarding bus", "tourists with luggage"],
+    "Kochen und Essen zu Hause": ["family cooking together kitchen", "father and daughter cooking", "family dinner table", "woman cooking at home"],
+    "Hausarbeit und Putzen": ["woman cleaning house", "family doing housework", "man vacuum cleaning", "doing laundry at home"],
+    "Umzug und Wohnung": ["moving into new apartment boxes", "couple carrying moving boxes", "people painting wall apartment", "family unpacking boxes"],
+    "Sport und Fitness": ["people jogging in park", "friends playing football", "group fitness class", "cycling family"],
+    "Feiern und Geburtstag": ["birthday party children", "friends celebrating party", "family birthday cake", "wedding guests celebrating"],
+    "Urlaub und Strand": ["family on beach vacation", "tourists sightseeing city", "children playing on beach", "hiking in mountains group"],
+    "Bei der Arbeit: Berufe": ["florist arranging flowers", "chef in restaurant kitchen", "hairdresser cutting hair", "teacher in classroom with students"],
+    "Winter und Schnee": ["children playing in snow", "family sledding winter", "people walking in snow", "building snowman children"],
+    "Verkehr und Fahrrad": ["cyclist in city traffic", "children crossing street crossing", "people waiting at bus stop", "traffic accident police"],
+    "Lesen und Bibliothek": ["people reading in library", "student studying library", "child reading book with parent", "reading book on park bench"],
+}
+
+
 def get_json(url, headers=None):
     req = urllib.request.Request(url, headers={**UA, **(headers or {})})
     with urllib.request.urlopen(req, timeout=40) as r:
@@ -122,7 +141,14 @@ def main():
     ap.add_argument("--per-topic", type=int, default=15)
     ap.add_argument("--only", default="", help="Themen kommagetrennt (Teil des Namens genügt)")
     ap.add_argument("--rebuild-manifest", action="store_true")
+    ap.add_argument("--set", choices=["base", "new"], default="base", help="Themenliste: base oder new (zusätzliche Themen)")
+    ap.add_argument("--out", default="", help="anderer Ausgabeordner (z. B. images_candidates)")
+    ap.add_argument("--start", type=int, default=1, help="erste Themen-Nummer (Ordnername tNN)")
     a = ap.parse_args()
+    global OUT
+    if a.out:
+        OUT = os.path.abspath(a.out)
+    topics = NEW_TOPICS if a.set == "new" else TOPICS
     os.makedirs(OUT, exist_ok=True)
     if a.rebuild_manifest:
         return build_manifest()
@@ -135,7 +161,7 @@ def main():
     if os.path.exists(os.path.join(OUT, "credits.json")):
         credits = json.load(open(os.path.join(OUT, "credits.json"), encoding="utf-8"))
 
-    for i, (title, queries) in enumerate(TOPICS.items(), 1):
+    for i, (title, queries) in enumerate(topics.items(), a.start):
         if only and not any(o in title.lower() for o in only):
             continue
         slug = f"t{i:02d}"
@@ -173,7 +199,7 @@ def main():
                 time.sleep(0.8)
 
     json.dump(credits, open(os.path.join(OUT, "credits.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-    with open(CREDITS, "w", encoding="utf-8") as f:
+    with open(CREDITS if not a.out else os.path.join(OUT, "CREDITS.md"), "w", encoding="utf-8") as f:
         f.write("# Bildnachweise / Picture credits\n\nFotos von Pexels und Pixabay (freie Lizenzen). "
                 "Photos from Pexels and Pixabay (free licences).\n\n")
         for k in sorted(credits):

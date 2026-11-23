@@ -40,6 +40,8 @@ Fotos von Pixabay (Pixabay Content License, https://pixabay.com/service/license-
 - `images/t05/t05_015.jpg` – Familie, Kinder und Freizeit – Foto: 5311692 / Pixabay – https://pixabay.com/photos/mother-and-daughter-picnic-storytime-2629795/
 - `images/t05/t06_006.jpg` – Familie, Kinder und Freizeit – Foto: thedanw / Pixabay – https://pixabay.com/photos/music-kids-children-play-xylophone-818459/
 - `images/t05/t06_008.jpg` – Familie, Kinder und Freizeit – Foto: tolmacho / Pixabay – https://pixabay.com/photos/kindergarten-clown-animator-holiday-2204239/
+- `images/t05/t41_013.jpg` – Familie, Kinder und Freizeit – Foto: Sunriseforever / Pixabay – https://pixabay.com/photos/kids-games-pillow-fight-family-5022349/
+- `images/t05/t41_018.jpg` – Familie, Kinder und Freizeit – Foto: Pezibear / Pixabay – https://pixabay.com/photos/person-human-child-girl-blond-822803/
 - `images/t07/t07_001.jpg` – Arbeit im Büro und am Computer – Foto: StartupStockPhotos / Pixabay – https://pixabay.com/photos/man-laptop-businessman-entrepreneur-593372/
 - `images/t07/t07_002.jpg` – Arbeit im Büro und am Computer – Foto: StartupStockPhotos / Pixabay – https://pixabay.com/photos/entrepreneur-start-up-man-planning-593371/
 - `images/t07/t07_003.jpg` – Arbeit im Büro und am Computer – Foto: SnapwireSnaps / Pixabay – https://pixabay.com/photos/man-work-desk-business-person-597178/
@@ -70,3 +72,70 @@ Fotos von Pixabay (Pixabay Content License, https://pixabay.com/service/license-
 - `images/t21/t21_011.jpg` – Musik auf der Straße – Foto: Vladvictoria / Pixabay – https://pixabay.com/photos/marching-band-band-parade-school-4223023/
 - `images/t21/t21_012.jpg` – Musik auf der Straße – Foto: StockSnap / Pixabay – https://pixabay.com/photos/people-men-musician-trumpet-2593937/
 - `images/t21/t21_013.jpg` – Musik auf der Straße – Foto: Surprising_Media / Pixabay – https://pixabay.com/photos/man-boy-busker-playing-guitar-8816308/
+- `images/t30/t30_012.jpg` – Im Supermarkt und Einkaufen – Foto: Sunriseforever / Pixabay – https://pixabay.com/photos/girl-basket-supermarket-cart-7024553/
+- `images/t30/t30_013.jpg` – Im Supermarkt und Einkaufen – Foto: Sunriseforever / Pixabay – https://pixabay.com/photos/family-shopping-center-purchase-2923690/
+- `images/t30/t30_016.jpg` – Im Supermarkt und Einkaufen – Foto: kc0uvb / Pixabay – https://pixabay.com/photos/happy-holidays-shopping-bottle-2411667/
+- `images/t30/t30_020.jpg` – Im Supermarkt und Einkaufen – Foto: kasjanf / Pixabay – https://pixabay.com/photos/girl-shop-souvenirs-woman-shelf-4181395/
+- `images/t31/t31_002.jpg` – Beim Arzt – Foto: kumarsu6745_ / Pixabay – https://pixabay.com/photos/doctor-examining-patient-10217214/
+- `images/t31/t31_003.jpg` – Beim Arzt – Foto: ovariancancer1 / Pixabay – https://pixabay.com/photos/doctor-patient-gynecologist-women-9628974/
+- `images/t31/t31_004.jpg` – Beim Arzt – Foto: TungArt7 / Pixabay – https://pixabay.com/photos/pediatrician-doctor-baby-child-10172911/
+- `images/t31/t31_005.jpg` – Beim Arzt – Foto: TungArt7 / Pixabay – https://pixabay.com/photos/baby-pediatrician-doctor-medical-10172896/
+- `images/t31/t31_010.jpg` – Beim Arzt – Foto: u_fzv8dg70p8 / Pixabay – https://pixabay.com/photos/doctor-medication-consultation-10514568/
+- `images/t31/t31_013.jpg` – Beim Arzt – Foto: kumarsu6745_ / Pixabay – https://pixabay.com/photos/cardiology-md-diagnostic-arrhythmia-10217198/
+- `images/t31/t31_018.jpg` – Beim Arzt – Foto: u_atk62mjqnp / Pixabay – https://pixabay.com/photos/spine-center-in-fremont-spine-doctor-8167473/
+- `images/t31/t31_020.jpg` – Beim Arzt – Foto: DrGreenthamb / Pixabay – https://pixabay.com/photos/treatment-help-care-medic-medicine-5402915/
+- `images/t32/t32_001.jpg` – Im Restaurant und Café – Foto: pasja1000 / Pixabay – https://pixabay.com/photos/waiter-caf%C3%A9-mask-covid-19-5513560/
+- `images/t32/t32_006.jpg` – Im Restaurant und Café – Foto: RestaurantAnticaRoma / Pixabay – https://pixabay.com/photos/dinner-salad-restaurant-italians-939434/
+- `images/t32/t32_007.jpg` – Im Restaurant und Café – Foto: Van3ssa_ / Pixabay – https://pixabay.com/photos/fine-dining-table-service-6912548/
+- `images/t32/t32_012.jpg` – Im Restaurant und Café – Foto: rickbella / Pixabay – https://pixabay.com/photos/food-servers-banquet-waitress-3996802/
+- `images/t32/t32_018.jpg` – Im Restaurant und Café – Foto: TiBine / Pixabay – https://pixabay.com/photos/folk-festival-beer-tradition-drink-1434523/
+- `images/t32/t32_019.jpg` – Im Restaurant und Café – Foto: kaicho20 / Pixabay – https://pixabay.com/photos/waiter-bread-deliver-serve-food-492872/
+- `images/t33/t33_001.jpg` – Am Flughafen und auf Reisen – Foto: ClickerHappy / Pixabay – https://pixabay.com/photos/airport-terminal-man-travel-1822133/
+- `images/t33/t33_004.jpg` – Am Flughafen und auf Reisen – Foto: wal_172619 / Pixabay – https://pixabay.com/photos/silhouettes-people-bank-suitcase-6576684/
+- `images/t33/t33_005.jpg` – Am Flughafen und auf Reisen – Foto: Getkeel123 / Pixabay – https://pixabay.com/photos/passport-smile-travel-exploration-7564502/
+- `images/t33/t33_006.jpg` – Am Flughafen und auf Reisen – Foto: JESHOOTS-com / Pixabay – https://pixabay.com/photos/happy-holidays-airport-airplane-3511342/
+- `images/t33/t33_010.jpg` – Am Flughafen und auf Reisen – Foto: katyveldhorst / Pixabay – https://pixabay.com/photos/travel-suitcase-airport-luggage-778338/
+- `images/t33/t33_018.jpg` – Am Flughafen und auf Reisen – Foto: Nel_Botha / Pixabay – https://pixabay.com/photos/silhouette-person-rushing-terminal-4796573/
+- `images/t34/t34_001.jpg` – Kochen und Essen zu Hause – Foto: u_c48rf6ybx8 / Pixabay – https://pixabay.com/photos/happy-family-love-mother-baby-10186546/
+- `images/t34/t34_002.jpg` – Kochen und Essen zu Hause – Foto: Vilkasss / Pixabay – https://pixabay.com/photos/family-baking-cooking-kitchen-home-10430834/
+- `images/t34/t34_003.jpg` – Kochen und Essen zu Hause – Foto: MatlaBrand / Pixabay – https://pixabay.com/photos/mother-and-daughter-cooking-kitchen-7031077/
+- `images/t34/t34_005.jpg` – Kochen und Essen zu Hause – Foto: jellymarketing / Pixabay – https://pixabay.com/photos/cooking-family-baked-goods-10361997/
+- `images/t34/t34_006.jpg` – Kochen und Essen zu Hause – Foto: FernandoZ / Pixabay – https://pixabay.com/photos/family-dinner-grandfather-children-10392561/
+- `images/t34/t34_007.jpg` – Kochen und Essen zu Hause – Foto: knuckles_echidna / Pixabay – https://pixabay.com/photos/family-love-father-mother-child-7744298/
+- `images/t34/t34_010.jpg` – Kochen und Essen zu Hause – Foto: u_jnk7dxjxsh / Pixabay – https://pixabay.com/photos/child-mother-table-serve-plate-6986711/
+- `images/t34/t34_011.jpg` – Kochen und Essen zu Hause – Foto: 339731 / Pixabay – https://pixabay.com/photos/sister-girl-baking-bake-stir-mix-553520/
+- `images/t34/t34_012.jpg` – Kochen und Essen zu Hause – Foto: 089photoshootings / Pixabay – https://pixabay.com/photos/happy-valentines-day-woman-man-1979272/
+- `images/t35/t35_004.jpg` – Hausarbeit und Putzen – Foto: viarami / Pixabay – https://pixabay.com/photos/woman-broom-workers-street-cleaner-7494708/
+- `images/t35/t35_007.jpg` – Hausarbeit und Putzen – Foto: Pixelleaf_studio / Pixabay – https://pixabay.com/photos/window-cleaning-professional-services-10532207/
+- `images/t35/t35_008.jpg` – Hausarbeit und Putzen – Foto: flutie8211 / Pixabay – https://pixabay.com/photos/washing-machine-laundry-housework-10577925/
+- `images/t35/t35_019.jpg` – Hausarbeit und Putzen – Foto: danielkirsch / Pixabay – https://pixabay.com/photos/monk-monastery-sweep-clean-broom-4420676/
+- `images/t36/t36_002.jpg` – Umzug und neue Wohnung – Foto: muhammadabubakar123 / Pixabay – https://pixabay.com/photos/couple-move-key-apartment-owner-8056160/
+- `images/t36/t36_003.jpg` – Umzug und neue Wohnung – Foto: natik_1123 / Pixabay – https://pixabay.com/photos/home-house-family-husband-and-wife-5574911/
+- `images/t36/t36_004.jpg` – Umzug und neue Wohnung – Foto: AshirvadPackers / Pixabay – https://pixabay.com/photos/moving-apartment-packing-8252172/
+- `images/t37/t37_011.jpg` – Sport und Joggen – Foto: Pexels / Pixabay – https://pixabay.com/photos/couple-holding-hands-man-woman-1869206/
+- `images/t37/t37_013.jpg` – Sport und Joggen – Foto: sasint / Pixabay – https://pixabay.com/photos/woman-running-run-fitness-sports-1822459/
+- `images/t37/t37_014.jpg` – Sport und Joggen – Foto: roxanawilliams1920 / Pixabay – https://pixabay.com/photos/running-woman-fitness-runner-6252827/
+- `images/t37/t37_016.jpg` – Sport und Joggen – Foto: wal_172619_II / Pixabay – https://pixabay.com/photos/man-runner-running-sport-fitness-8293794/
+- `images/t37/t37_019.jpg` – Sport und Joggen – Foto: wal_172619 / Pixabay – https://pixabay.com/photos/jogging-fitness-jogger-movement-4211946/
+- `images/t37/t37_020.jpg` – Sport und Joggen – Foto: Pexels / Pixabay – https://pixabay.com/photos/man-jogging-exercise-fitness-jog-1838991/
+- `images/t39/t34_017.jpg` – Urlaub am Strand – Foto: sarahbernier3140 / Pixabay – https://pixabay.com/photos/father-daughter-beach-family-daddy-656734/
+- `images/t39/t39_001.jpg` – Urlaub am Strand – Foto: Pexels / Pixabay – https://pixabay.com/photos/beach-family-fun-leisure-ocean-1867271/
+- `images/t39/t39_002.jpg` – Urlaub am Strand – Foto: sarahbernier3140 / Pixabay – https://pixabay.com/photos/father-daughter-beach-family-daddy-656734/
+- `images/t39/t39_003.jpg` – Urlaub am Strand – Foto: sasint / Pixabay – https://pixabay.com/photos/adult-mother-daughter-beach-kids-1807500/
+- `images/t39/t39_004.jpg` – Urlaub am Strand – Foto: chillla70 / Pixabay – https://pixabay.com/photos/family-beach-people-ocean-6398107/
+- `images/t39/t39_005.jpg` – Urlaub am Strand – Foto: PublicDomainPictures / Pixabay – https://pixabay.com/photos/mother-baby-happy-motherhood-84628/
+- `images/t39/t39_006.jpg` – Urlaub am Strand – Foto: chillla70 / Pixabay – https://pixabay.com/photos/family-love-parenthood-vacation-6475821/
+- `images/t39/t39_009.jpg` – Urlaub am Strand – Foto: Hamsterfreund / Pixabay – https://pixabay.com/photos/beach-people-sea-sand-footprints-5696492/
+- `images/t39/t39_010.jpg` – Urlaub am Strand – Foto: jump1987 / Pixabay – https://pixabay.com/photos/child-boy-smile-father-dad-beach-5489290/
+- `images/t39/t39_012.jpg` – Urlaub am Strand – Foto: mario0107 / Pixabay – https://pixabay.com/photos/family-beach-child-toddler-mother-1111818/
+- `images/t39/t39_016.jpg` – Urlaub am Strand – Foto: cocoparisienne / Pixabay – https://pixabay.com/photos/child-girl-human-man-people-355176/
+- `images/t40/t40_002.jpg` – Berufe: Floristin – Foto: motomotosc / Pixabay – https://pixabay.com/photos/woman-flowers-florist-sidewalk-8386159/
+- `images/t40/t40_005.jpg` – Berufe: Floristin – Foto: VoVanQuy / Pixabay – https://pixabay.com/photos/street-woman-flower-vendor-girl-5921408/
+- `images/t40/t40_012.jpg` – Berufe: Floristin – Foto: hammad_designz / Pixabay – https://pixabay.com/photos/lady-woman-fashion-model-portrait-10022310/
+- `images/t42/t42_003.jpg` – Verkehr und Fahrrad – Foto: Pexels / Pixabay – https://pixabay.com/photos/bike-blur-cars-city-cyclist-urban-1836934/
+- `images/t42/t42_004.jpg` – Verkehr und Fahrrad – Foto: PeterDargatz / Pixabay – https://pixabay.com/photos/berlin-wall-graffiti-road-street-50730/
+- `images/t42/t42_005.jpg` – Verkehr und Fahrrad – Foto: wal_172619 / Pixabay – https://pixabay.com/photos/berlin-city-road-traffic-7218821/
+- `images/t42/t42_006.jpg` – Verkehr und Fahrrad – Foto: farishamza007 / Pixabay – https://pixabay.com/photos/man-bicycle-fitness-activity-7036709/
+- `images/t42/t42_008.jpg` – Verkehr und Fahrrad – Foto: trilemedia / Pixabay – https://pixabay.com/photos/biking-street-flood-city-bike-5680458/
+- `images/t42/t42_010.jpg` – Verkehr und Fahrrad – Foto: u_d7hddm5o / Pixabay – https://pixabay.com/photos/san-francisco-woman-electric-bike-6950837/
+- `images/t42/t42_011.jpg` – Verkehr und Fahrrad – Foto: Surprising_Media / Pixabay – https://pixabay.com/photos/woman-bicycle-street-bike-path-7369219/

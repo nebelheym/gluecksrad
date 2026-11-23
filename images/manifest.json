@@ -49,7 +49,9 @@
    "t05_014.jpg",
    "t05_015.jpg",
    "t06_006.jpg",
-   "t06_008.jpg"
+   "t06_008.jpg",
+   "t41_013.jpg",
+   "t41_018.jpg"
   ]
  },
  "t07": {
@@ -100,6 +102,128 @@
    "t21_011.jpg",
    "t21_012.jpg",
    "t21_013.jpg"
+  ]
+ },
+ "t30": {
+  "title": "Im Supermarkt und Einkaufen",
+  "files": [
+   "t30_012.jpg",
+   "t30_013.jpg",
+   "t30_016.jpg",
+   "t30_020.jpg"
+  ]
+ },
+ "t31": {
+  "title": "Beim Arzt",
+  "files": [
+   "t31_002.jpg",
+   "t31_003.jpg",
+   "t31_004.jpg",
+   "t31_005.jpg",
+   "t31_010.jpg",
+   "t31_013.jpg",
+   "t31_018.jpg",
+   "t31_020.jpg"
+  ]
+ },
+ "t32": {
+  "title": "Im Restaurant und Café",
+  "files": [
+   "t32_001.jpg",
+   "t32_006.jpg",
+   "t32_007.jpg",
+   "t32_012.jpg",
+   "t32_018.jpg",
+   "t32_019.jpg"
+  ]
+ },
+ "t33": {
+  "title": "Am Flughafen und auf Reisen",
+  "files": [
+   "t33_001.jpg",
+   "t33_004.jpg",
+   "t33_005.jpg",
+   "t33_006.jpg",
+   "t33_010.jpg",
+   "t33_018.jpg"
+  ]
+ },
+ "t34": {
+  "title": "Kochen und Essen zu Hause",
+  "files": [
+   "t34_001.jpg",
+   "t34_002.jpg",
+   "t34_003.jpg",
+   "t34_005.jpg",
+   "t34_006.jpg",
+   "t34_007.jpg",
+   "t34_010.jpg",
+   "t34_011.jpg",
+   "t34_012.jpg"
+  ]
+ },
+ "t35": {
+  "title": "Hausarbeit und Putzen",
+  "files": [
+   "t35_004.jpg",
+   "t35_007.jpg",
+   "t35_008.jpg",
+   "t35_019.jpg"
+  ]
+ },
+ "t36": {
+  "title": "Umzug und neue Wohnung",
+  "files": [
+   "t36_002.jpg",
+   "t36_003.jpg",
+   "t36_004.jpg"
+  ]
+ },
+ "t37": {
+  "title": "Sport und Joggen",
+  "files": [
+   "t37_011.jpg",
+   "t37_013.jpg",
+   "t37_014.jpg",
+   "t37_016.jpg",
+   "t37_019.jpg",
+   "t37_020.jpg"
+  ]
+ },
+ "t39": {
+  "title": "Urlaub am Strand",
+  "files": [
+   "t34_017.jpg",
+   "t39_001.jpg",
+   "t39_002.jpg",
+   "t39_003.jpg",
+   "t39_004.jpg",
+   "t39_005.jpg",
+   "t39_006.jpg",
+   "t39_009.jpg",
+   "t39_010.jpg",
+   "t39_012.jpg",
+   "t39_016.jpg"
+  ]
+ },
+ "t40": {
+  "title": "Berufe: Floristin",
+  "files": [
+   "t40_002.jpg",
+   "t40_005.jpg",
+   "t40_012.jpg"
+  ]
+ },
+ "t42": {
+  "title": "Verkehr und Fahrrad",
+  "files": [
+   "t42_003.jpg",
+   "t42_004.jpg",
+   "t42_005.jpg",
+   "t42_006.jpg",
+   "t42_008.jpg",
+   "t42_010.jpg",
+   "t42_011.jpg"
   ]
  }
 }

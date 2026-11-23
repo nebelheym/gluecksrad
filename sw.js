@@ -1,5 +1,5 @@
 /* Offline cache (stale-while-revalidate). Bump CACHE when you change the file list. */
-const CACHE = "gluecksrad-v15";
+const CACHE = "gluecksrad-v16";
 const ASSETS = ["./", "index.html", "css/styles.css", "js/i18n.js", "js/app.js", "manifest.webmanifest", "icon.svg"];
 
 self.addEventListener("install", (e) => {
