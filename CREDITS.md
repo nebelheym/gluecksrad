@@ -1,0 +1,154 @@
+# Bildnachweise / Picture credits
+
+Fotos von Pixabay (Pixabay Content License, https://pixabay.com/service/license-summary/). Photos from Pixabay.
+
+- `images/t02/001.jpg` – Haustiere – Foto: StephenCh / Pixabay – https://pixabay.com/photos/kid-dog-outdoors-little-girl-girl-5718703/
+- `images/t02/002.jpg` – Haustiere – Foto: jarmoluk / Pixabay – https://pixabay.com/photos/dog-man-pet-owner-grass-park-454145/
+- `images/t02/003.jpg` – Haustiere – Foto: Pexels / Pixabay – https://pixabay.com/photos/child-dog-pet-dress-girl-1867463/
+- `images/t02/004.jpg` – Haustiere – Foto: jatocreate / Pixabay – https://pixabay.com/photos/borador-little-boy-forest-trail-7513186/
+- `images/t02/005.jpg` – Haustiere – Foto: tonyminguillon / Pixabay – https://pixabay.com/photos/child-dog-field-boy-friends-love-6276604/
+- `images/t02/006.jpg` – Haustiere – Foto: lindsrw / Pixabay – https://pixabay.com/photos/girls-dog-playing-pet-leash-puppy-5801275/
+- `images/t02/007.jpg` – Haustiere – Foto: Muscat_Coach / Pixabay – https://pixabay.com/photos/child-dog-nature-children-5334516/
+- `images/t02/008.jpg` – Haustiere – Foto: seanwareing / Pixabay – https://pixabay.com/photos/girl-biking-dog-summer-vacation-4823612/
+- `images/t02/009.jpg` – Haustiere – Foto: Pexels / Pixabay – https://pixabay.com/photos/children-dog-pet-cute-footwear-1866531/
+- `images/t02/010.jpg` – Haustiere – Foto: JACLOU-DL / Pixabay – https://pixabay.com/photos/dogs-puppies-baby-dogs-8635461/
+- `images/t02/011.jpg` – Haustiere – Foto: RomiSchmidSwitzerland / Pixabay – https://pixabay.com/photos/golden-retriever-puppy-puppies-dogs-10055444/
+- `images/t02/012.jpg` – Haustiere – Foto: TheOtherKev / Pixabay – https://pixabay.com/photos/child-with-dog-child-dog-walking-4297149/
+- `images/t02/013.jpg` – Haustiere – Foto: alanajordan / Pixabay – https://pixabay.com/photos/little-girl-pug-pet-portrait-7631594/
+- `images/t02/014.jpg` – Haustiere – Foto: IamFOSNA / Pixabay – https://pixabay.com/photos/boy-baby-dog-field-child-kid-5883959/
+- `images/t02/015.jpg` – Haustiere – Foto: nmiranda / Pixabay – https://pixabay.com/photos/portrait-mammal-young-little-3218469/
+- `images/t03/001.jpg` – Lernen, Schule und Bildung – Foto: White77 / Pixabay – https://pixabay.com/photos/boys-kids-children-happy-sitting-286245/
+- `images/t03/002.jpg` – Lernen, Schule und Bildung – Foto: sasint / Pixabay – https://pixabay.com/photos/students-computers-laptops-smiling-1807505/
+- `images/t03/003.jpg` – Lernen, Schule und Bildung – Foto: akshayapatra / Pixabay – https://pixabay.com/photos/children-india-education-classroom-876543/
+- `images/t03/004.jpg` – Lernen, Schule und Bildung – Foto: StockSnap / Pixabay – https://pixabay.com/photos/people-girls-women-students-2557396/
+- `images/t03/005.jpg` – Lernen, Schule und Bildung – Foto: klimkin / Pixabay – https://pixabay.com/photos/merry-christmas-kids-girls-writing-1093758/
+- `images/t03/006.jpg` – Lernen, Schule und Bildung – Foto: SyauqiFillah / Pixabay – https://pixabay.com/photos/studying-teacher-students-sunset-5831644/
+- `images/t03/007.jpg` – Lernen, Schule und Bildung – Foto: geralt / Pixabay – https://pixabay.com/photos/school-to-learn-students-future-3980940/
+- `images/t03/008.jpg` – Lernen, Schule und Bildung – Foto: akshayapatra / Pixabay – https://pixabay.com/photos/happy-children-children-smile-happy-835527/
+- `images/t03/009.jpg` – Lernen, Schule und Bildung – Foto: akshayapatra / Pixabay – https://pixabay.com/photos/school-children-happy-smile-joy-1443779/
+- `images/t03/010.jpg` – Lernen, Schule und Bildung – Foto: Sunriseforever / Pixabay – https://pixabay.com/photos/read-learn-kids-studies-class-4245926/
+- `images/t03/011.jpg` – Lernen, Schule und Bildung – Foto: Sunriseforever / Pixabay – https://pixabay.com/photos/abc-school-kids-september-1-4431556/
+- `images/t03/012.jpg` – Lernen, Schule und Bildung – Foto: sweetlouise / Pixabay – https://pixabay.com/photos/girls-study-union-friendship-books-2769555/
+- `images/t03/013.jpg` – Lernen, Schule und Bildung – Foto: Sunriseforever / Pixabay – https://pixabay.com/photos/boys-book-read-reading-learn-6279146/
+- `images/t03/014.jpg` – Lernen, Schule und Bildung – Foto: White77 / Pixabay – https://pixabay.com/photos/children-studying-togetherness-boys-286239/
+- `images/t03/015.jpg` – Lernen, Schule und Bildung – Foto: TheoRivierenlaan / Pixabay – https://pixabay.com/photos/coaching-class-classroom-2526903/
+- `images/t04/001.jpg` – Freizeit zu Hause – Foto: Michelle-Maria / Pixabay – https://pixabay.com/photos/boy-portrait-home-youth-child-7072347/
+- `images/t04/002.jpg` – Freizeit zu Hause – Foto: Michelle-Maria / Pixabay – https://pixabay.com/photos/children-boy-portrait-couch-7069462/
+- `images/t04/004.jpg` – Freizeit zu Hause – Foto: 2081671 / Pixabay – https://pixabay.com/photos/merry-christmas-child-game-family-3046494/
+- `images/t04/005.jpg` – Freizeit zu Hause – Foto: fancycrave1 / Pixabay – https://pixabay.com/photos/baby-mother-infant-child-female-821625/
+- `images/t04/006.jpg` – Freizeit zu Hause – Foto: ParentiPacek / Pixabay – https://pixabay.com/photos/motherhood-childhood-4624889/
+- `images/t04/007.jpg` – Freizeit zu Hause – Foto: StockSnap / Pixabay – https://pixabay.com/photos/baby-people-parents-father-mother-2592302/
+- `images/t04/008.jpg` – Freizeit zu Hause – Foto: iamluisao / Pixabay – https://pixabay.com/photos/lifestyle-abrazo-familia-mother-7361023/
+- `images/t04/011.jpg` – Freizeit zu Hause – Foto: Pexels / Pixabay – https://pixabay.com/photos/children-dog-pet-cute-footwear-1866531/
+- `images/t04/012.jpg` – Freizeit zu Hause – Foto: shubham_photogrophy_rbg / Pixabay – https://pixabay.com/photos/smile-boy-happiness-baby-child-8281558/
+- `images/t05/001.jpg` – Familie und Freizeit – Foto: Pexels / Pixabay – https://pixabay.com/photos/girls-swimming-splashing-sisters-1284419/
+- `images/t05/002.jpg` – Familie und Freizeit – Foto: MabelAmber / Pixabay – https://pixabay.com/photos/family-love-outdoors-woman-man-3602245/
+- `images/t05/003.jpg` – Familie und Freizeit – Foto: Pexels / Pixabay – https://pixabay.com/photos/bonding-boy-children-enjoyment-1868513/
+- `images/t05/004.jpg` – Familie und Freizeit – Foto: wal_172619 / Pixabay – https://pixabay.com/photos/scooter-bicycle-leisure-time-biking-7396608/
+- `images/t05/006.jpg` – Familie und Freizeit – Foto: OleksandrPidvalnyi / Pixabay – https://pixabay.com/photos/park-playing-catch-kids-children-6688951/
+- `images/t05/008.jpg` – Familie und Freizeit – Foto: Surprising_Media / Pixabay – https://pixabay.com/photos/family-fountain-children-park-7244468/
+- `images/t05/009.jpg` – Familie und Freizeit – Foto: Jupilu / Pixabay – https://pixabay.com/photos/children-tent-rabbit-camping-kids-9138817/
+- `images/t05/010.jpg` – Familie und Freizeit – Foto: ignartonosbg / Pixabay – https://pixabay.com/photos/ground-camping-family-camp-picnic-8260968/
+- `images/t05/011.jpg` – Familie und Freizeit – Foto: kamiel79 / Pixabay – https://pixabay.com/photos/girl-playground-korean-child-play-5159270/
+- `images/t05/012.jpg` – Familie und Freizeit – Foto: keulefm / Pixabay – https://pixabay.com/photos/amusement-park-europa-park-boat-237200/
+- `images/t05/013.jpg` – Familie und Freizeit – Foto: Huskyherz / Pixabay – https://pixabay.com/photos/old-people-married-couple-together-616718/
+- `images/t05/014.jpg` – Familie und Freizeit – Foto: Sunriseforever / Pixabay – https://pixabay.com/photos/picnic-family-kids-dad-father-5174652/
+- `images/t05/015.jpg` – Familie und Freizeit – Foto: 5311692 / Pixabay – https://pixabay.com/photos/mother-and-daughter-picnic-storytime-2629795/
+- `images/t06/001.jpg` – Kindergarten und Sport mit Kindern – Foto: FeeLoona / Pixabay – https://pixabay.com/photos/christmas-background-child-tower-1864718/
+- `images/t06/005.jpg` – Kindergarten und Sport mit Kindern – Foto: akshayapatra / Pixabay – https://pixabay.com/photos/children-india-education-classroom-876543/
+- `images/t06/006.jpg` – Kindergarten und Sport mit Kindern – Foto: thedanw / Pixabay – https://pixabay.com/photos/music-kids-children-play-xylophone-818459/
+- `images/t06/007.jpg` – Kindergarten und Sport mit Kindern – Foto: Design_Miss_C / Pixabay – https://pixabay.com/photos/games-children-little-girl-girl-2801332/
+- `images/t06/008.jpg` – Kindergarten und Sport mit Kindern – Foto: tolmacho / Pixabay – https://pixabay.com/photos/kindergarten-clown-animator-holiday-2204239/
+- `images/t06/009.jpg` – Kindergarten und Sport mit Kindern – Foto: EvgeniT / Pixabay – https://pixabay.com/photos/table-paper-creativity-training-3281047/
+- `images/t06/010.jpg` – Kindergarten und Sport mit Kindern – Foto: ClickerHappy / Pixabay – https://pixabay.com/photos/child-wooden-blocks-kid-childhood-2293839/
+- `images/t06/012.jpg` – Kindergarten und Sport mit Kindern – Foto: LRCL / Pixabay – https://pixabay.com/photos/nursery-child-kindergarten-school-2114173/
+- `images/t06/015.jpg` – Kindergarten und Sport mit Kindern – Foto: newarta / Pixabay – https://pixabay.com/photos/kid-toys-play-preschool-childhood-5020226/
+- `images/t07/001.jpg` – Arbeit im Büro und am Computer – Foto: StartupStockPhotos / Pixabay – https://pixabay.com/photos/man-laptop-businessman-entrepreneur-593372/
+- `images/t07/002.jpg` – Arbeit im Büro und am Computer – Foto: StartupStockPhotos / Pixabay – https://pixabay.com/photos/entrepreneur-start-up-man-planning-593371/
+- `images/t07/003.jpg` – Arbeit im Büro und am Computer – Foto: SnapwireSnaps / Pixabay – https://pixabay.com/photos/man-work-desk-business-person-597178/
+- `images/t07/004.jpg` – Arbeit im Büro und am Computer – Foto: Rodrigo_SalomonHC / Pixabay – https://pixabay.com/photos/receptionists-phone-call-hotel-5975962/
+- `images/t07/005.jpg` – Arbeit im Büro und am Computer – Foto: StartupStockPhotos / Pixabay – https://pixabay.com/photos/entrepreneur-startup-woman-macbook-593357/
+- `images/t07/006.jpg` – Arbeit im Büro und am Computer – Foto: stokpic / Pixabay – https://pixabay.com/photos/woman-working-bed-laptop-typing-731894/
+- `images/t07/009.jpg` – Arbeit im Büro und am Computer – Foto: StartupStockPhotos / Pixabay – https://pixabay.com/photos/office-startup-business-home-office-594132/
+- `images/t07/010.jpg` – Arbeit im Büro und am Computer – Foto: Firmbee / Pixabay – https://pixabay.com/photos/office-notes-notepad-entrepreneur-620817/
+- `images/t07/011.jpg` – Arbeit im Büro und am Computer – Foto: StartupStockPhotos / Pixabay – https://pixabay.com/photos/student-typing-keyboard-text-woman-849828/
+- `images/t07/014.jpg` – Arbeit im Büro und am Computer – Foto: StartupStockPhotos / Pixabay – https://pixabay.com/photos/student-typing-keyboard-text-849825/
+- `images/t07/015.jpg` – Arbeit im Büro und am Computer – Foto: u_h0yvbj97 / Pixabay – https://pixabay.com/photos/arbeitszeiterfassung-zeiterfassung-4312250/
+- `images/t09/001.jpg` – Müdigkeit und Schlaf – Foto: Claudio_Scott / Pixabay – https://pixabay.com/photos/woman-asleep-girl-sleep-bed-cozy-2197947/
+- `images/t09/003.jpg` – Müdigkeit und Schlaf – Foto: StockSnap / Pixabay – https://pixabay.com/photos/people-woman-stripes-sweatshirt-2590564/
+- `images/t09/004.jpg` – Müdigkeit und Schlaf – Foto: RobinHiggins / Pixabay – https://pixabay.com/photos/upset-overwhelmed-stress-tired-2681502/
+- `images/t09/005.jpg` – Müdigkeit und Schlaf – Foto: Concord90 / Pixabay – https://pixabay.com/photos/young-woman-computer-work-fatigue-1064658/
+- `images/t09/006.jpg` – Müdigkeit und Schlaf – Foto: PublicDomainPictures / Pixabay – https://pixabay.com/photos/book-bored-college-education-15584/
+- `images/t09/007.jpg` – Müdigkeit und Schlaf – Foto: Concord90 / Pixabay – https://pixabay.com/photos/young-woman-computer-notebook-1064659/
+- `images/t09/009.jpg` – Müdigkeit und Schlaf – Foto: magnetme / Pixabay – https://pixabay.com/photos/woman-bored-tired-office-business-5679001/
+- `images/t09/010.jpg` – Müdigkeit und Schlaf – Foto: TheDigitalArtist / Pixabay – https://pixabay.com/photos/woman-worried-nightmare-stress-3351794/
+- `images/t09/011.jpg` – Müdigkeit und Schlaf – Foto: SocialButterflyMMG / Pixabay – https://pixabay.com/photos/people-portrait-adult-drink-woman-3308747/
+- `images/t09/012.jpg` – Müdigkeit und Schlaf – Foto: Engin_Akyurt / Pixabay – https://pixabay.com/photos/sleep-pillow-sleepwalking-portrait-2603545/
+- `images/t09/013.jpg` – Müdigkeit und Schlaf – Foto: WOKANDAPIX / Pixabay – https://pixabay.com/photos/sleeping-dreaming-person-resting-1353562/
+- `images/t09/014.jpg` – Müdigkeit und Schlaf – Foto: Engin_Akyurt / Pixabay – https://pixabay.com/photos/model-pillow-sleep-sleepwalking-2373534/
+- `images/t09/015.jpg` – Müdigkeit und Schlaf – Foto: StockSnap / Pixabay – https://pixabay.com/photos/people-woman-sit-laundry-machine-2590562/
+- `images/t14/001.jpg` – Schach und Brettspiele – Foto: obsidianphotography / Pixabay – https://pixabay.com/photos/chess-chess-pieces-glass-reflection-433071/
+- `images/t14/002.jpg` – Schach und Brettspiele – Foto: 17831348 / Pixabay – https://pixabay.com/photos/chess-checkmate-chess-board-5516446/
+- `images/t14/003.jpg` – Schach und Brettspiele – Foto: Ralf1403 / Pixabay – https://pixabay.com/photos/chess-chess-pieces-strategy-9536049/
+- `images/t14/004.jpg` – Schach und Brettspiele – Foto: Ylanite / Pixabay – https://pixabay.com/photos/chess-board-game-strategy-toys-3467512/
+- `images/t14/005.jpg` – Schach und Brettspiele – Foto: Van3ssa_ / Pixabay – https://pixabay.com/photos/chess-black-chess-pieces-6872239/
+- `images/t14/006.jpg` – Schach und Brettspiele – Foto: jarmoluk / Pixabay – https://pixabay.com/photos/chess-board-game-strategy-1080533/
+- `images/t14/007.jpg` – Schach und Brettspiele – Foto: Bru-nO / Pixabay – https://pixabay.com/photos/chess-board-game-chessboard-4794265/
+- `images/t14/009.jpg` – Schach und Brettspiele – Foto: jarmoluk / Pixabay – https://pixabay.com/photos/strategy-chess-board-game-1080527/
+- `images/t14/010.jpg` – Schach und Brettspiele – Foto: RosZie / Pixabay – https://pixabay.com/photos/chess-pieces-king-queen-heart-wood-7465249/
+- `images/t14/011.jpg` – Schach und Brettspiele – Foto: Ralf1403 / Pixabay – https://pixabay.com/photos/chess-chess-pieces-chess-board-game-9549682/
+- `images/t14/012.jpg` – Schach und Brettspiele – Foto: eloiroudaire77 / Pixabay – https://pixabay.com/photos/game-chess-board-chess-board-5960731/
+- `images/t14/013.jpg` – Schach und Brettspiele – Foto: jarmoluk / Pixabay – https://pixabay.com/photos/strategy-chess-board-game-1080528/
+- `images/t16/001.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: hpgruesen / Pixabay – https://pixabay.com/photos/steam-locomotive-express-locomotive-3110886/
+- `images/t16/002.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: 12252435 / Pixabay – https://pixabay.com/photos/traffic-train-rail-4635675/
+- `images/t16/003.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: hpgruesen / Pixabay – https://pixabay.com/photos/intercity-train-visit-2145915/
+- `images/t16/004.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: kazokuda / Pixabay – https://pixabay.com/photos/jr-west-japan-shin-osaka-haruka-1342780/
+- `images/t16/005.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: 12019 / Pixabay – https://pixabay.com/photos/train-locomotive-travel-1728537/
+- `images/t16/006.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: ArminEP / Pixabay – https://pixabay.com/photos/shinkansen-bullet-train-5237269/
+- `images/t16/007.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: strohmi / Pixabay – https://pixabay.com/photos/tokyo-japan-city-urban-subway-9826329/
+- `images/t16/008.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: WikiImages / Pixabay – https://pixabay.com/photos/train-railway-snow-winter-railroad-62849/
+- `images/t16/009.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: JESHOOTS-com / Pixabay – https://pixabay.com/photos/city-people-underground-metro-1940691/
+- `images/t16/010.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: Pexels / Pixabay – https://pixabay.com/photos/man-train-public-transportation-1283748/
+- `images/t16/011.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: vlrondon / Pixabay – https://pixabay.com/photos/passenger-train-station-commuter-5593947/
+- `images/t16/012.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: devinedsel / Pixabay – https://pixabay.com/photos/woman-train-kyoto-japan-people-9189442/
+- `images/t16/013.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: victoraf / Pixabay – https://pixabay.com/photos/train-station-platform-railway-3384786/
+- `images/t16/014.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: Maaridls / Pixabay – https://pixabay.com/photos/couple-love-train-connection-7774025/
+- `images/t16/015.jpg` – Reisen und öffentliche Verkehrsmittel – Foto: r-q / Pixabay – https://pixabay.com/photos/old-train-train-nostalgia-china-8110662/
+- `images/t19/001.jpg` – Großeltern und Generationen – Foto: stevepb / Pixabay – https://pixabay.com/photos/elderly-hands-ring-walking-stick-981400/
+- `images/t19/002.jpg` – Großeltern und Generationen – Foto: Huskyherz / Pixabay – https://pixabay.com/photos/old-people-married-couple-together-616718/
+- `images/t19/003.jpg` – Großeltern und Generationen – Foto: photos_galary / Pixabay – https://pixabay.com/photos/holding-hands-hands-family-love-10577770/
+- `images/t19/004.jpg` – Großeltern und Generationen – Foto: BookBabe / Pixabay – https://pixabay.com/photos/grandparents-love-married-1054311/
+- `images/t19/006.jpg` – Großeltern und Generationen – Foto: besnopile / Pixabay – https://pixabay.com/photos/grandparents-old-senior-grandmother-2807673/
+- `images/t19/007.jpg` – Großeltern und Generationen – Foto: un-perfekt / Pixabay – https://pixabay.com/photos/granny-grandpa-grandparents-seniors-3655814/
+- `images/t19/008.jpg` – Großeltern und Generationen – Foto: 243623 / Pixabay – https://pixabay.com/photos/old-age-youth-hand-grandmother-360714/
+- `images/t19/009.jpg` – Großeltern und Generationen – Foto: miltonhuallpa95 / Pixabay – https://pixabay.com/photos/family-photo-happiness-parents-827760/
+- `images/t19/010.jpg` – Großeltern und Generationen – Foto: useche360 / Pixabay – https://pixabay.com/photos/elderly-happy-seniors-fatigue-4008796/
+- `images/t19/011.jpg` – Großeltern und Generationen – Foto: ijm2000 / Pixabay – https://pixabay.com/photos/grandmother-pensioners-portrait-old-499167/
+- `images/t19/012.jpg` – Großeltern und Generationen – Foto: zdenekfritz0 / Pixabay – https://pixabay.com/photos/duel-of-time-meeting-of-generations-1154787/
+- `images/t19/013.jpg` – Großeltern und Generationen – Foto: ThuyHaBich / Pixabay – https://pixabay.com/photos/woman-white-hair-traditional-2893651/
+- `images/t19/014.jpg` – Großeltern und Generationen – Foto: danielkirsch / Pixabay – https://pixabay.com/photos/old-man-asian-man-farmer-wrinkles-4395870/
+- `images/t19/015.jpg` – Großeltern und Generationen – Foto: Daniel_Nebreda / Pixabay – https://pixabay.com/photos/people-portrait-adult-old-woman-3190181/
+- `images/t21/001.jpg` – Musik – Foto: Alexas_Fotos / Pixabay – https://pixabay.com/photos/cello-musician-music-street-artist-7219171/
+- `images/t21/002.jpg` – Musik – Foto: Surprising_Media / Pixabay – https://pixabay.com/photos/boy-busker-playing-trumpet-8399526/
+- `images/t21/003.jpg` – Musik – Foto: AndreasAux / Pixabay – https://pixabay.com/photos/guitar-case-street-musician-donate-485112/
+- `images/t21/004.jpg` – Musik – Foto: Surprising_Media / Pixabay – https://pixabay.com/photos/woman-young-girl-busker-talented-7991234/
+- `images/t21/005.jpg` – Musik – Foto: Pexels / Pixabay – https://pixabay.com/photos/musician-guitarist-streets-people-1284394/
+- `images/t21/006.jpg` – Musik – Foto: Surprising_Media / Pixabay – https://pixabay.com/photos/musician-street-music-man-person-7300353/
+- `images/t21/007.jpg` – Musik – Foto: ham515 / Pixabay – https://pixabay.com/photos/paris-street-artist-cello-music-1706910/
+- `images/t21/008.jpg` – Musik – Foto: musaortac / Pixabay – https://pixabay.com/photos/street-guitar-musician-music-5183453/
+- `images/t21/009.jpg` – Musik – Foto: Waldemar_RU / Pixabay – https://pixabay.com/photos/girl-dreadlocks-itinerant-musician-6290663/
+- `images/t21/010.jpg` – Musik – Foto: Pexels / Pixabay – https://pixabay.com/photos/guitarist-street-performer-man-1869787/
+- `images/t21/011.jpg` – Musik – Foto: Vladvictoria / Pixabay – https://pixabay.com/photos/marching-band-band-parade-school-4223023/
+- `images/t21/012.jpg` – Musik – Foto: StockSnap / Pixabay – https://pixabay.com/photos/people-men-musician-trumpet-2593937/
+- `images/t21/013.jpg` – Musik – Foto: Surprising_Media / Pixabay – https://pixabay.com/photos/man-boy-busker-playing-guitar-8816308/
+- `images/t21/014.jpg` – Musik – Foto: 7144605 / Pixabay – https://pixabay.com/photos/piano-band-music-instrument-3703616/
+- `images/t21/015.jpg` – Musik – Foto: Pexels / Pixabay – https://pixabay.com/photos/guitar-guitarist-man-music-1853661/
+- `images/t24/002.jpg` – Winter und Schnee – Foto: Couleur / Pixabay – https://pixabay.com/photos/snowman-snow-christmas-winter-cold-1882635/
+- `images/t24/004.jpg` – Winter und Schnee – Foto: congerdesign / Pixabay – https://pixabay.com/photos/snowman-winter-grasses-hoarfrost-4674856/
+- `images/t24/007.jpg` – Winter und Schnee – Foto: suju-foto / Pixabay – https://pixabay.com/photos/snowman-snow-winter-cold-wintry-3008179/
+- `images/t24/008.jpg` – Winter und Schnee – Foto: garten-gg / Pixabay – https://pixabay.com/photos/snowman-family-winter-snow-frost-6933132/
+- `images/t24/009.jpg` – Winter und Schnee – Foto: ivabalk / Pixabay – https://pixabay.com/photos/snowman-snow-winter-christmas-8413769/
+- `images/t24/010.jpg` – Winter und Schnee – Foto: wal_172619 / Pixabay – https://pixabay.com/photos/snowman-winter-snow-season-6981771/
+- `images/t24/012.jpg` – Winter und Schnee – Foto: JillWellington / Pixabay – https://pixabay.com/photos/winter-snow-pretty-woman-1878713/
+- `images/t24/014.jpg` – Winter und Schnee – Foto: garten-gg / Pixabay – https://pixabay.com/photos/christmas-season-christmas-background-6838063/
+- `images/t24/015.jpg` – Winter und Schnee – Foto: lhotsky / Pixabay – https://pixabay.com/photos/snowman-toboggan-christmas-snow-1088417/

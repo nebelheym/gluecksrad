@@ -1,0 +1,212 @@
+{
+ "t02": {
+  "title": "Haustiere",
+  "files": [
+   "001.jpg",
+   "002.jpg",
+   "003.jpg",
+   "004.jpg",
+   "005.jpg",
+   "006.jpg",
+   "007.jpg",
+   "008.jpg",
+   "009.jpg",
+   "010.jpg",
+   "011.jpg",
+   "012.jpg",
+   "013.jpg",
+   "014.jpg",
+   "015.jpg"
+  ]
+ },
+ "t03": {
+  "title": "Lernen, Schule und Bildung",
+  "files": [
+   "001.jpg",
+   "002.jpg",
+   "003.jpg",
+   "004.jpg",
+   "005.jpg",
+   "006.jpg",
+   "007.jpg",
+   "008.jpg",
+   "009.jpg",
+   "010.jpg",
+   "011.jpg",
+   "012.jpg",
+   "013.jpg",
+   "014.jpg",
+   "015.jpg"
+  ]
+ },
+ "t04": {
+  "title": "Freizeit zu Hause",
+  "files": [
+   "001.jpg",
+   "002.jpg",
+   "004.jpg",
+   "005.jpg",
+   "006.jpg",
+   "007.jpg",
+   "008.jpg",
+   "011.jpg",
+   "012.jpg"
+  ]
+ },
+ "t05": {
+  "title": "Familie und Freizeit",
+  "files": [
+   "001.jpg",
+   "002.jpg",
+   "003.jpg",
+   "004.jpg",
+   "006.jpg",
+   "008.jpg",
+   "009.jpg",
+   "010.jpg",
+   "011.jpg",
+   "012.jpg",
+   "013.jpg",
+   "014.jpg",
+   "015.jpg"
+  ]
+ },
+ "t06": {
+  "title": "Kindergarten und Sport mit Kindern",
+  "files": [
+   "001.jpg",
+   "005.jpg",
+   "006.jpg",
+   "007.jpg",
+   "008.jpg",
+   "009.jpg",
+   "010.jpg",
+   "012.jpg",
+   "015.jpg"
+  ]
+ },
+ "t07": {
+  "title": "Arbeit im Büro und am Computer",
+  "files": [
+   "001.jpg",
+   "002.jpg",
+   "003.jpg",
+   "004.jpg",
+   "005.jpg",
+   "006.jpg",
+   "009.jpg",
+   "010.jpg",
+   "011.jpg",
+   "014.jpg",
+   "015.jpg"
+  ]
+ },
+ "t09": {
+  "title": "Müdigkeit und Schlaf",
+  "files": [
+   "001.jpg",
+   "003.jpg",
+   "004.jpg",
+   "005.jpg",
+   "006.jpg",
+   "007.jpg",
+   "009.jpg",
+   "010.jpg",
+   "011.jpg",
+   "012.jpg",
+   "013.jpg",
+   "014.jpg",
+   "015.jpg"
+  ]
+ },
+ "t14": {
+  "title": "Schach und Brettspiele",
+  "files": [
+   "001.jpg",
+   "002.jpg",
+   "003.jpg",
+   "004.jpg",
+   "005.jpg",
+   "006.jpg",
+   "007.jpg",
+   "009.jpg",
+   "010.jpg",
+   "011.jpg",
+   "012.jpg",
+   "013.jpg"
+  ]
+ },
+ "t16": {
+  "title": "Reisen und öffentliche Verkehrsmittel",
+  "files": [
+   "001.jpg",
+   "002.jpg",
+   "003.jpg",
+   "004.jpg",
+   "005.jpg",
+   "006.jpg",
+   "007.jpg",
+   "008.jpg",
+   "009.jpg",
+   "010.jpg",
+   "011.jpg",
+   "012.jpg",
+   "013.jpg",
+   "014.jpg",
+   "015.jpg"
+  ]
+ },
+ "t19": {
+  "title": "Großeltern und Generationen",
+  "files": [
+   "001.jpg",
+   "002.jpg",
+   "003.jpg",
+   "004.jpg",
+   "006.jpg",
+   "007.jpg",
+   "008.jpg",
+   "009.jpg",
+   "010.jpg",
+   "011.jpg",
+   "012.jpg",
+   "013.jpg",
+   "014.jpg",
+   "015.jpg"
+  ]
+ },
+ "t21": {
+  "title": "Musik",
+  "files": [
+   "001.jpg",
+   "002.jpg",
+   "003.jpg",
+   "004.jpg",
+   "005.jpg",
+   "006.jpg",
+   "007.jpg",
+   "008.jpg",
+   "009.jpg",
+   "010.jpg",
+   "011.jpg",
+   "012.jpg",
+   "013.jpg",
+   "014.jpg",
+   "015.jpg"
+  ]
+ },
+ "t24": {
+  "title": "Winter und Schnee",
+  "files": [
+   "002.jpg",
+   "004.jpg",
+   "007.jpg",
+   "008.jpg",
+   "009.jpg",
+   "010.jpg",
+   "012.jpg",
+   "014.jpg",
+   "015.jpg"
+  ]
+ }
+}
